@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="text-center {{ messages.tags }} animate__animated
+                    animate__fadeIn animate__delay-3s">{{ message }}</h5>
+                {% endfor %}
+            {% endif %}
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Register Property</h6>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'properties:registration' %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Property Name</label>
+                                    {{ form.property_name }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Property Address</label>
+                                    {{ form.address }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Brief Description</label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">City</label>
+                                    {{ form.city }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Country</label>
+                                    {{ form.country }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">State</label>
+                                    {{ form.state }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Landlord</label>
+                                    {{ form.landlord }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Status</label>
+                                    {{ form.property_status }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Register</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

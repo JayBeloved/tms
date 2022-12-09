@@ -1,0 +1,117 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="text-center {{ messages.tags }} animate__animated
+                    animate__fadeIn animate__delay-3s">{{ message }}</h5>
+                {% endfor %}
+            {% endif %}
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Register Tenant</h6>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'tenants:registration' %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Tenant Name</label>
+                                    {{ form.tenant_name }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Tenant Email</label>
+                                    {{ form.tenant_email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Contact Number</label>
+                                    {{ form.mobile_number }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Office Address</label>
+                                    {{ form.office_address }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Name</label>
+                                    {{ form.next_of_kin }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Contact Number</label>
+                                    {{ form.nok_contact }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Rented Property</label>
+                                    {{ form.current_property }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Nationality</label>
+                                    {{ form.nationality }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Marital Status</label>
+                                    {{ form.marital_status }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Industry</label>
+                                    {{ form.industry }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Job Title</label>
+                                    {{ form.occupation }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Register</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

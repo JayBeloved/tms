@@ -1,0 +1,77 @@
+<!-- Rentals Tables -->
+<div class="col-xl-8 col-lg-7">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Rental Agreements</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-outline" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Property</th>
+                            <th>Tenant</th>
+                            <th>Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if rentals %}
+                        {% for rental in rentals %}
+                            <tr>
+                                <td>{{ rent.agreement_code }}</td>
+                                <td>{{ rent.property }}</td>
+                                <td>{{ rent.agent }}</td>
+                                <td>{{ rent.date_started }}</td>
+                                <td><a class="btn btn-success btn-sm">View</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                    <h6 class="m-0 font-weight-bold text-primary text-center">
+                        No Agreements to Display</h6>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="col-xl-4 col-lg-5">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Registrations</h6>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'agents:registration' %}">
+                <span class="icon text-white-50">
+                    <i class="fas fa-user-tie"></i>
+                </span>
+                <span class="text">Register New Agent</span>
+            </a>
+            <div class="my-2"></div>
+             <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'landlords:registration' %}">
+                <span class="icon text-white-50">
+                    <i class="fas fa-user"></i>
+                </span>
+                <span class="text">Register New Landlord</span>
+            </a>
+            <div class="my-2"></div>
+             <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'tenants:registration' %}">
+                <span class="icon text-white-50">
+                    <i class="fas fa-users"></i>
+                </span>
+                <span class="text">Register New Tenant</span>
+            </a>
+            <div class="my-2"></div>
+            <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'properties:registration' %}">
+                <span class="icon text-white-50">
+                    <i class="fas fa-building"></i>
+                </span>
+                <span class="text">Register New Property</span>
+            </a>
+            <div class="my-2"></div>
+        </div>
+    </div>
+</div>

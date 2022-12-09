@@ -1,0 +1,19 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Register Landlord{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+{% include 'properties/includes/_page_heading.html' %}
+{% endblock %}
+
+{% block content %}
+{% include 'properties/includes/_property_reg_form.html' %}
+{% endblock %}

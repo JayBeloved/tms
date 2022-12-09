@@ -1,0 +1,89 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Register Agent{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Hello,{{ request.user.last_name }} {{ request.user.first_name }}</h1>
+    <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
+            class="fas fa-user-tie fa-sm text-white-50"></i> {{ usertype }}
+    </h5>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Profile Display Form -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Primary Details</h6>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'accounts:profile' %}" class="user" method="get">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">First Name</label>
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Last Name</label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Username</label>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Email</label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="btn btn-primary btn-user btn-block" href="">Edit/Update</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
+            </div>
+            <div class="card-body">
+                <img src="{{ request.user.profile.image.url }}" class="img-fluid img-square" alt="Profile Image">
+                <div class="my-2"></div>
+                <a class="btn btn-primary btn-user btn-block" href="">Edit/Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

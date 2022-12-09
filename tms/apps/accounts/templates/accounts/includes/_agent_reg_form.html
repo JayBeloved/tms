@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="text-center {{ messages.tags }} animate__animated
+                    animate__fadeIn animate__delay-3s">{{ message }}</h5>
+                {% endfor %}
+            {% endif %}
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Register Agent</h6>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'agents:registration' %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">First Name</label>
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Last Name</label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Username</label>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Email</label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Password</label>
+                                    {{ form.password1 }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Type Password Again</label>
+                                    {{ form.password2 }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Register</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

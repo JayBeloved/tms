@@ -1,0 +1,19 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Register Agent{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+{% include 'accounts/includes/_page_heading.html' %}
+{% endblock %}
+
+{% block content %}
+{% include 'accounts/includes/_agent_reg_form.html' %}
+{% endblock %}
