@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "tms.apps.properties",
     "tms.apps.tenants",
 
+    "storages",
+
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
