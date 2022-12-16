@@ -3,8 +3,10 @@ Django settings for tenantproject project.
 
 """
 
+
 from pathlib import Path
 
+import django_heroku
 import dj_database_url
 from decouple import Csv, config
 
@@ -198,3 +200,5 @@ MESSAGE_TAGS = {
     messages.WARNING: 'text-warning',
     messages.ERROR: 'text-danger',
 }
+
+django_heroku.settings(locals())
