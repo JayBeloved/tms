@@ -3,6 +3,7 @@ import datetime
 from django.db.models.aggregates import Count
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 
 from django.utils.decorators import method_decorator
 
@@ -34,4 +35,11 @@ def admin_index(request):
     }
     return render(request, "dashboards/index.html", context)
 
+@login_required()
+def new_rental(request):
+    pass
+
+
+class RentalsListView(ListView):
+    model = rentals
 

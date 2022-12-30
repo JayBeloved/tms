@@ -13,6 +13,7 @@ urlpatterns = [
     path('agents/', include(([
             path('register/', views.register_agent, name="registration"),
             path('all/', views.AgentsListView.as_view(), name="all"),
+            path('id/<int:agent_id>/view/', views.agent_info, name="agent_info")
         ], 'tms'), namespace='agents')),
 
     path('user/', include(([

@@ -5,6 +5,8 @@ from django.views.generic import ListView
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 
+from django.core.exceptions import ObjectDoesNotExist
+
 ########################
 
 from django.shortcuts import render, redirect, reverse
@@ -159,19 +161,6 @@ def my_profile(request):
 
 
 @login_required()
-def agent_profile(request):
-    get_usertype = request.user.user_type
-    usertype = 'Error'
-    for t in USERTYPE_CHOICES:
-        if t[0] == get_usertype:
-            usertype = t[1]
-
-    info_form = ProfileInfoForm(instance=request.user)
-    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype})
-
-
-
-@login_required()
 def profile_info(request):
     if request.method == 'POST':
         u_form = ProfileInfoUpdateForm(request.POST, instance=request.user)
@@ -185,3 +174,25 @@ def profile_info(request):
         u_form = ProfileInfoUpdateForm(instance=request.user)
 
     return render(request, 'accounts/profile_details.html', {'form': u_form})
+
+
+@login_required()
+def agent_info(request, agent_id):
+    if agent_id is None:
+        messages.error(request, 'No Agent Selected')
+        return HttpResponseRedirect(reverse("agents:all"))
+    else:
+        try:
+            sel_agent = User.objects.get(id=agent_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("agents:all"))
+
+    info_form = ProfileInfoForm(instance=sel_agent)
+
+    context = {
+        'form': info_form,
+        'agent': sel_agent,
+    }
+    return render(request, 'accounts/dashboards/agent_info.html', context)
+

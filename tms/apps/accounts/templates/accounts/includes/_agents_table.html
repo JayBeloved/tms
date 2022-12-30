@@ -25,7 +25,8 @@
                                 <td>{{ agent.username }}</td>
                                 <td>{{ agent.email }}</td>
                                 <td>{{ agent.last_login }}</td>
-                                <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
+                                <td><a class="btn btn-user btn-secondary btn-sm"
+                                       href="{% url 'agents:agent_info' agent.id %}">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

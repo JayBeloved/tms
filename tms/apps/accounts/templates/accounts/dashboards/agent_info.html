@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}User Profile{% endblock title %}
+{% block title %}Agent Profile{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -12,9 +12,9 @@
 
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Hello, {{ request.user.last_name }} {{ request.user.first_name }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ agent.last_name }} {{ agent.first_name }}</h1>
     <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
-            class="fas fa-user-tie fa-sm text-white-50"></i> {{ usertype }}
+            class="fas fa-user-tie fa-sm text-white-50"></i> Agent
     </h5>
 </div>
 {% endblock %}
@@ -79,7 +79,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
             </div>
             <div class="card-body">
-                <img src="{{ request.user.profile.image.url }}" class="img-fluid img-square" alt="Profile Image">
+                <img src="{{ agent.profile.image.url }}" class="img-fluid img-square" alt="Profile Image">
                 <div class="my-2"></div>
                 <a class="btn btn-primary btn-user btn-block" href="">Edit/Update</a>
             </div>

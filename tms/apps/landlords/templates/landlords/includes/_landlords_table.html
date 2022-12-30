@@ -20,12 +20,13 @@
 
                         {% for landlord in landlords %}
                             <tr>
-                                <td>{{ landlord.landlord_code }}</td>
+                                <td>{{ landlord.id }}</td>
                                 <td>{{ landlord.landlord_name }}</td>
                                 <td>{{ landlord.landlord_email }}</td>
                                 <td>{{ landlord.mobile_number }}</td>
                                 <td>{{ landlord.state_of_origin }}</td>
-                                <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
+                                <td><a class="btn btn-user btn-secondary btn-sm"
+                                       href="">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

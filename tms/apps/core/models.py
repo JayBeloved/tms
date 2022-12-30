@@ -41,7 +41,6 @@ STATES = (
     ("Yobe", 'Yobe'),
     ("Zamfara", 'Zamfara'),
     ("FCT", 'FCT'),
-
 )
 
 # Create Gender Choices
@@ -97,6 +96,15 @@ AGREEMENT_CHOICES = (
     (YR5, "5 Years"),
 )
 
+# Tenancy Status Choices
+RUN = 1
+END = 0
+
+TENANCY_CHOICES = (
+    (RUN, 'Tenancy is Running'),
+    (END, 'Tenancy has Ended'),
+)
+
 # Nationality Choices
 NGR = "Nigerian"
 OTH = "International"
@@ -116,13 +124,13 @@ class landlord(models.Model):
     landlord_code = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f"Landlord {self.landlord_code} - {self.landlord_name}"
+        return self.landlord_name
 
 
 class managed_properties(models.Model):
     property_name = models.CharField(max_length=60)
-    address = models.CharField(max_length=225)
-    city = models.CharField(max_length=100)
+    address = models.CharField(max_length=225, null=True)
+    city = models.CharField(max_length=100, null=True)
     state = models.CharField(max_length=15, choices=STATES, default="FCT")
     country = models.CharField(max_length=50)
     description = models.TextField(null=True)
@@ -133,7 +141,7 @@ class managed_properties(models.Model):
     property_code = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f'{self.property_code} - {self.property_name}'
+        return self.property_name
 
 
 class tenant(models.Model):
@@ -141,7 +149,8 @@ class tenant(models.Model):
     tenant_name = models.CharField(max_length=60, null=True)
     tenant_email = models.EmailField(null=True)
     mobile_number = models.CharField(max_length=15, null=True, blank=True)
-    current_property = models.ForeignKey(managed_properties, on_delete=models.CASCADE, to_field='property_code')
+    current_property = models.ForeignKey(managed_properties,
+                                         on_delete=models.CASCADE, to_field='property_code', null=True)
     marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS, default=NLL)
     nationality = models.CharField(max_length=50, choices=NATIONALITY_CHOICES, default=NGR)
     tenant_code = models.CharField(max_length=30, unique=True, null=True)
@@ -154,7 +163,7 @@ class tenant(models.Model):
     office_address = models.TextField(null=True)
 
     def __str__(self):
-        return f"Tenant - {self.tenant_name}"
+        return self.tenant_name
 
 
 class rentals(models.Model):
@@ -167,6 +176,7 @@ class rentals(models.Model):
     rental_amount = models.CharField(max_length=30)
     date_ending = models.DateField('End of Rent', null=True)
     agreement_code = models.CharField(max_length=30, unique=True)
+    status = models.PositiveSmallIntegerField('tenancy status', choices=TENANCY_CHOICES, default=RUN)
 
     def __str__(self):
         return f"Agreement {self.agreement_code} with {self.tenant}"
