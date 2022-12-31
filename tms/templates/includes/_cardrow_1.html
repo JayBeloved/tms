@@ -2,7 +2,8 @@
 <div class="col-xl-8 col-lg-7">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Rental Agreements</h6>
+            <h6 class="m-0 font-weight-bold text-primary">
+                <a href="{% url 'rentals:all' %}">Rental Agreements</a></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -12,17 +13,17 @@
                             <th>ID</th>
                             <th>Property</th>
                             <th>Tenant</th>
-                            <th>Agent</th>
+                            <th>Period</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% if rentals %}
                         {% for rental in rentals %}
                             <tr>
-                                <td>{{ rent.agreement_code }}</td>
-                                <td>{{ rent.property }}</td>
-                                <td>{{ rent.agent }}</td>
-                                <td>{{ rent.date_started }}</td>
+                                <td>{{ rental.id }}</td>
+                                <td>{{ rental.property }}</td>
+                                <td>{{ rental.tenant }}</td>
+                                <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
                                 <td><a class="btn btn-success btn-sm">View</a></td>
                             </tr>
                         {% endfor %}

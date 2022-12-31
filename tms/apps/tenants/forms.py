@@ -48,6 +48,7 @@ class TenantRegForm(forms.Form):
         ))
 
     tenant_email = forms.EmailField(
+        required=False,
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -56,6 +57,7 @@ class TenantRegForm(forms.Form):
         ))
 
     mobile_number = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -64,6 +66,7 @@ class TenantRegForm(forms.Form):
         ))
 
     next_of_kin = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -72,6 +75,7 @@ class TenantRegForm(forms.Form):
         ))
 
     nok_contact = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -80,6 +84,7 @@ class TenantRegForm(forms.Form):
         ))
 
     marital_status = forms.ChoiceField(
+        required=False,
         choices=MARITAL_STATUS,
         widget=forms.Select(
             attrs={
@@ -89,6 +94,7 @@ class TenantRegForm(forms.Form):
         ))
 
     nationality = forms.ChoiceField(
+        required=False,
         choices=NATIONALITY_CHOICES,
         widget=forms.Select(
             attrs={
@@ -98,6 +104,7 @@ class TenantRegForm(forms.Form):
         ))
 
     office_address = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -115,6 +122,7 @@ class TenantRegForm(forms.Form):
         ))
 
     industry = forms.ChoiceField(
+        required=False,
         choices=INDUSTRIES,
         widget=forms.Select(
             attrs={
@@ -124,6 +132,7 @@ class TenantRegForm(forms.Form):
         ))
 
     occupation = forms.ChoiceField(
+        required=False,
         choices=OCCUPATION,
         widget=forms.Select(
             attrs={

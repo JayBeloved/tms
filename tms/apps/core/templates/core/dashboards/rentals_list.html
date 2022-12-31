@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}Register Agent{% endblock title %}
+{% block title %}Rentals{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -13,12 +13,12 @@
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Rentals</h1>
-    <a href="{% url 'landlords:registration' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+    <a href="{% url 'rentals:new' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-user fa-sm text-white-50"></i> New Rental Agreement
     </a>
 </div>
 {% endblock %}
 
 {% block content %}
-{% include 'landlords/includes/_landlords_table.html' %}
+{% include 'core/includes/_rentals_table.html' %}
 {% endblock %}

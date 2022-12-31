@@ -31,6 +31,7 @@ class PropertyRegForm(forms.Form):
         ))
 
     city = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -57,6 +58,7 @@ class PropertyRegForm(forms.Form):
         ))
 
     description = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
@@ -75,6 +77,7 @@ class PropertyRegForm(forms.Form):
         ))
 
     property_status = forms.ChoiceField(
+        required=False,
         choices=STATUS_CHOICES,
         widget=forms.Select(
             attrs={

@@ -8,25 +8,32 @@
                 {% endfor %}
             {% endif %}
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Register Landlord</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Register Rental Agreement</h6>
             </div>
             <div class="card-body">
                 <div class="p-5">
-                    <form action="{% url 'landlords:registration' %}" class="user" method="POST">
+                    <form action="{% url 'rentals:new' %}" class="user" method="POST">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Name</label>
-                                    {{ form.landlord_name }}
+                                    <label class="float-label text-primary">Select Property</label>
+                                    {{ form.property }}
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Email</label>
-                                    {{ form.landlord_email }}
+                                    <label class="float-label text-primary">Select Tenant</label>
+                                    {{ form.tenant }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Rental Amount <strong>(N)</strong></label>
+                                    {{ form.rental_amount }}
                                 </div>
                             </div>
                         </div>
@@ -35,15 +42,39 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Contact Number</label>
-                                    {{ form.mobile_number }}
+                                    <label class="float-label text-primary">Period Start</label>
+                                    {{ form.date_started }}
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">State</label>
-                                    {{ form.state_of_origin }}
+                                    <label class="float-label text-primary">Period End</label>
+                                    {{ form.date_ending }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Proposed Use (optional)</label>
+                                    {{ form.proposed_use }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Agreement Length (optional)</label>
+                                    {{ form.agreement_duration }}
+                                </div>
+                            </div>
+                             <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Tenancy Status (optional)</label>
+                                    {{ form.status }}
                                 </div>
                             </div>
                         </div>

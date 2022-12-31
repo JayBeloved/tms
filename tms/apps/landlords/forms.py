@@ -13,14 +13,17 @@ class LandlordRegForm(forms.Form):
         ))
 
     landlord_email = forms.EmailField(
+        required=False,
         widget=forms.EmailInput(
             attrs={
+                'required': False,
                 'class': 'form-control form-control-user',
                 'placeholder': "Enter An Active Email Address",
             }
         ))
 
     mobile_number = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
