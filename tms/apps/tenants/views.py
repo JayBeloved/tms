@@ -34,39 +34,37 @@ def register_tenant(request):
             occupation = form.cleaned_data.get("occupation")
 
             #############################
-            if tenant.objects.filter(tenant_email=tenant_email):
-                messages.error(request, f'Email already in use by another Tenant. Use a unique email address')
-            else:
-                #############################
-                # Generate Unique Landlord Code
-                # Randomly Choose Letters for adding to code
-                def gencode():
-                    char1 = random.choice(string.ascii_uppercase)
-                    char2 = random.choice(string.ascii_lowercase)
-                    char3 = random.choice(string.ascii_letters)
-                    char4 = random.choice('1234567890')
-                    char5 = random.choice(string.ascii_uppercase)
-                    char6 = random.choice(string.ascii_lowercase)
-                    char7 = random.choice(string.ascii_letters)
 
-                    return f"tnt/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
+            #############################
+            # Generate Unique Landlord Code
+            # Randomly Choose Letters for adding to code
+            def gencode():
+                char1 = random.choice(string.ascii_uppercase)
+                char2 = random.choice(string.ascii_lowercase)
+                char3 = random.choice(string.ascii_letters)
+                char4 = random.choice('1234567890')
+                char5 = random.choice(string.ascii_uppercase)
+                char6 = random.choice(string.ascii_lowercase)
+                char7 = random.choice(string.ascii_letters)
 
-                #############################
+                return f"tnt/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
+
+            #############################
+            tnt = gencode()
+            tenant_code = tnt
+            while tenant.objects.filter(tenant_code=tnt):
                 tnt = gencode()
-                tenant_code = tnt
-                while tenant.objects.filter(tenant_code=tnt):
-                    tnt = gencode()
-                    if not tenant.objects.filter(tenant_code=gencode):
-                        tenant_code = gencode
+                if not tenant.objects.filter(tenant_code=gencode):
+                    tenant_code = gencode
 
-                tn = tenant.objects.create(tenant_name=tenant_name, tenant_email=tenant_email,
-                                           mobile_number=mobile_number, next_of_kin=next_of_kin,
-                                           nok_contact=nok_contact, marital_status=marital_status,
-                                           nationality=nationality, office_address=office_address,
-                                           current_property=current_property, tenant_code=tenant_code,
-                                           industry=industry, occupation=occupation)
-                tn.save()
-                messages.success(request, f'Tenant Registered Successfully')
+            tn = tenant.objects.create(tenant_name=tenant_name, tenant_email=tenant_email,
+                                       mobile_number=mobile_number, next_of_kin=next_of_kin,
+                                       nok_contact=nok_contact, marital_status=marital_status,
+                                       nationality=nationality, office_address=office_address,
+                                       current_property=current_property, tenant_code=tenant_code,
+                                       industry=industry, occupation=occupation)
+            tn.save()
+            messages.success(request, f'Tenant Registered Successfully')
         else:
             messages.error(request, 'Something Went Wrong, Check your entries and try again.')
 

@@ -10,9 +10,9 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Landlord</th>
-                            <th>State</th>
-                            <th>City</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Location</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -21,9 +21,9 @@
                         {% for property in properties %}
                             <tr>
                                 <td>{{ property.id }}</td>
-                                <td>{{ property.landlord.landlord_name }}</td>
-                                <td>{{ property.state }}</td>
-                                <td>{{ property.city }}</td>
+                                <td>{{ property.property_name }}</td>
+                                <td>{{ property.address }}</td>
+                                <td>{{ property.city }}, {{ property.state }}</td>
                                 <td>{{ property.description }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
                             </tr>
