@@ -34,31 +34,29 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ property.property_name }}</h6>
+                    <h4 class="m-0 font-weight-bold text-primary">{{ property.property_name }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="card-subtitle">
-                        <h6 class="m-0 text-secondary">{{ property.address }}</h6>
+                        <h6 class="m-0 text-secondary">Address: <strong>{{ property.address }}</strong></h6>
                     </div>
                     <div class="p-5">
-                        {% if property in prop_list %}
                         <div class="table-responsive">
                             <table class="table table-outline table-hover" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Current Tenant</th>
+                                        <th>Current Tenant(s)</th>
                                         <th>Period</th>
                                         <th>Rent</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {% for rental in rentals %}
                                         {% if rental.property == property %}
                                         <tr>
                                             <td>{{ rental.tenant.tenant_name }}</td>
                                             <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
-                                            <td>{{ rental.rental_amount }}</td>
+                                            <td>N {{ rental.rental_amount }}</td>
                                             <td><a class="btn btn-user btn-secondary btn-sm"
                                                    href="">View</a></td>
                                         </tr>
@@ -67,11 +65,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        {% else %}
-                        <h6 class="m-0 font-weight-bold text-primary text-center">No Landlord to Display</h6>
-                        {% endif %}
-
-                    </div>
                 </div>
             </div>
         </div>

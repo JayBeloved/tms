@@ -26,7 +26,7 @@
                                 <td>{{ landlord.mobile_number }}</td>
                                 <td>{{ landlord.state_of_origin }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm"
-                                       href="">View</a></td>
+                                       href="{% url 'landlords:dashboard' landlord.id %}">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

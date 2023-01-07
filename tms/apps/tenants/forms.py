@@ -37,7 +37,7 @@ OCCUPATION = (
 all_properties = managed_properties.objects.all()
 
 
-# Form for Landlord Registration
+# Form for Tenant Registration
 class TenantRegForm(forms.Form):
     tenant_name = forms.CharField(
         widget=forms.TextInput(
@@ -146,3 +146,97 @@ class TenantRegForm(forms.Form):
         fields = ('tenant_name', 'tenant_email', 'mobile_number', 'next_of_kin', 'nok_contact', 'marital_status',
                   'nationality', 'office_address', "current_property", "industry", "occupation")
 
+
+class TenantInfoForm(forms.ModelForm):
+    tenant_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True
+            }
+        ))
+
+    tenant_email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True,
+            }
+        ))
+
+    mobile_number = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True
+            }
+        ))
+
+    next_of_kin = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True
+            }
+        ))
+
+    nok_contact = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True
+            }
+        ))
+
+    marital_status = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-select',
+                "readonly": True
+            }
+        ))
+
+    nationality = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-select',
+                "readonly": True
+            }
+        ))
+
+    office_address = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                "readonly": True
+            }
+        ))
+
+    current_property = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-select',
+                "readonly": True
+            }
+        ))
+
+    industry = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-select',
+                "readonly": True
+            }
+        ))
+
+    occupation = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-select',
+                "readonly": True
+            }
+        ))
+
+    class Meta:
+        model = tenant
+        fields = ('tenant_name', 'tenant_email', 'mobile_number', 'next_of_kin', 'nok_contact', 'marital_status',
+                  'nationality', 'office_address', "current_property", "industry", "occupation")

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
-
+from django.core.exceptions import ObjectDoesNotExist
 ########################
 
 from django.shortcuts import render, redirect, reverse
@@ -86,3 +86,24 @@ class TenantsListView(ListView):
     ordering = ['id']
     paginate_by = 5
     group_by = "current_property"
+
+
+def tenant_info(request, tenant_id):
+    if tenant_id is None:
+        messages.error(request, 'No Tenant Selected')
+        return HttpResponseRedirect(reverse("agents:all"))
+    else:
+        try:
+            sel_tenant = tenant.objects.get(id=tenant_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("tenants:all"))
+
+    info_form = TenantInfoForm(instance=sel_tenant)
+
+    context = {
+        'tenant': sel_tenant,
+        'form': info_form,
+    }
+
+    return render(request, 'tenants/dashboards/tenant_info.html', context)

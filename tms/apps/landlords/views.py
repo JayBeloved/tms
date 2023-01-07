@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.views.generic import ListView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 ########################
 
@@ -12,7 +13,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
-from ..core.models import landlord
+from ..core.models import landlord, managed_properties, rentals
 
 
 @login_required()
@@ -77,3 +78,31 @@ class LandlordsListView(ListView):
     context_object_name = "landlords"
     ordering = ['id']
     paginate_by = 5
+
+
+def landlord_dashboard(request, landlord_id):
+    if landlord_id is None:
+        messages.error(request, 'No Landlord Selected')
+        return HttpResponseRedirect(reverse("landlords:all"))
+    else:
+        try:
+            sel_landlord = landlord.objects.get(id=landlord_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("landlords:all"))
+
+        # Get all the properties owned to the landlord
+        landlord_properties = managed_properties.objects.filter(landlord=sel_landlord)
+
+        # Get all rentals associated to the landlord's properties
+        landlord_rentals = rentals.objects.all()
+
+    context = {
+        'properties': landlord_properties,
+        'prop_count': len(landlord_properties),
+        'landlord': sel_landlord,
+        'rentals': landlord_rentals,
+        'dbrentals': rentals,
+    }
+
+    return render(request, 'landlords/dashboards/landlord_dashboard.html', context)

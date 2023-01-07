@@ -25,7 +25,8 @@
                                 <td>{{ tenant.tenant_email }}</td>
                                 <td>{{ tenant.mobile_number }}</td>
                                 <td>{{ tenant.current_property.property_name }}</td>
-                                <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
+                                <td><a class="btn btn-user btn-secondary btn-sm"
+                                       href="{% url 'tenants:info' tenant.id %}">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
