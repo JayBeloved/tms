@@ -1,0 +1,24 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Rentals{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Payments</h1>
+    <a href="{% url 'payments:new' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-user fa-sm text-white-50"></i> Record New Payment
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+{% include 'core/includes/_payments_table.html' %}
+{% endblock %}

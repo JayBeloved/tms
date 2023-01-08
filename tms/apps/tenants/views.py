@@ -64,11 +64,11 @@ def register_tenant(request):
                                        current_property=current_property, tenant_code=tenant_code,
                                        industry=industry, occupation=occupation)
             tn.save()
-            messages.success(request, f'Tenant Registered Successfully')
+            messages.success(request, f'Tenant Registered Successfully \n Enter Agreement Details')
+            return redirect('rentals:new')
         else:
             messages.error(request, 'Something Went Wrong, Check your entries and try again.')
-
-        return HttpResponseRedirect(reverse("tenants:registration"))
+            return HttpResponseRedirect(reverse("tenants:registration"))
 
     context = {
         'form': form,

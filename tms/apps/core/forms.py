@@ -1,10 +1,11 @@
 from django import forms
-from .models import rentals, PROPERTY_USE, AGREEMENT_CHOICES, User, tenant, managed_properties, TENANCY_CHOICES
+from .models import rentals, PROPERTY_USE, AGREEMENT_CHOICES, User, tenant, managed_properties, payments
 
 # Necessary Queryset for model choice fields
 all_agents = User.objects.filter(user_type=2)
 all_tenants = tenant.objects.all()
 all_properties = managed_properties.objects.all()
+all_payments = rentals.objects.all()
 
 
 # Form for Rentals Registration
@@ -51,17 +52,6 @@ class RentalRegForm(forms.Form):
             }
         ))
 
-    status = forms.ChoiceField(
-        required=False,
-        choices=TENANCY_CHOICES,
-        widget=forms.Select(
-            attrs={
-                'class': 'form-control form-control-user',
-                'placeholder': " Phone Number",
-                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
-            }
-        ))
-
     date_started = forms.DateField(
         widget=forms.NumberInput(
             attrs={
@@ -94,5 +84,40 @@ class RentalRegForm(forms.Form):
     class meta:
         model = rentals
         fields = ('property', 'tenant', 'proposed_use', 'agreement_duration',
-                  'status', 'date_started', 'date_ending', 'rental_amount')
+                  'date_started', 'date_ending', 'rental_amount')
 
+
+# Form for payment record
+class PaymentForm(forms.Form):
+    rental = forms.ModelChoiceField(
+        queryset=all_payments,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Rental ",
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    amount = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': 'Enter Amount Paid',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    payment_date = forms.DateField(
+        widget=forms.NumberInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control form-control-select',
+                'placeholder': " Select Payment Date",
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    class meta:
+        model = payments
+        fields = ('rental', 'amount', 'payment_date')

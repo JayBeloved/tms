@@ -1,30 +1,31 @@
 <div class="col-xl-12 col-lg-12">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">All Tenants</h6>
+            <h6 class="m-0 font-weight-bold text-primary">All Payments</h6>
         </div>
         <div class="card-body">
-            {% if tenants %}
+            {% if payments %}
             <div class="table-responsive">
                 <table class="table table-outline table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Property</th>
+                            <th>Tenancy</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Balance</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        {% for tenant in tenants %}
+                        {% for payment in payments %}
                             <tr>
-                                <td>{{ tenant.id }}</td>
-                                <td>{{ tenant.tenant_name }}</td>
-                                <td>{{ tenant.mobile_number }}</td>
-                                <td>{{ tenant.current_property.property_name }}</td>
-                                <td><a class="btn btn-user btn-secondary btn-sm"
-                                       href="{% url 'tenants:info' tenant.id %}">View</a></td>
+                                <td>{{ payment.id }}</td>
+                                <td>{{ payment.rental }}</td>
+                                <td>{{ payment.payment_date }}</td>
+                                <td>{{ payment.amount }}</td>
+                                <td>N {{ payment.rental.balance }}</td>
+                                <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -65,7 +66,7 @@
             </div>
             {% else %}
             <h6 class="m-0 font-weight-bold text-primary text-center">
-                        No tenants to Display</h6>
+                        No Payment to Display</h6>
             {% endif %}
         </div>
     </div>

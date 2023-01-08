@@ -14,6 +14,7 @@
                             <th>Tenant</th>
                             <th>Period</th>
                             <th>Amount</th>
+                            <th>Balance</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,6 +26,7 @@
                                 <td>{{ rental.tenant }}</td>
                                 <td>{{ rental.date_started }} -  {{ rental.date_ending }}</td>
                                 <td>N {{ rental.rental_amount }}</td>
+                                <td>N {{ rental.balance }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
                             </tr>
                         {% endfor %}

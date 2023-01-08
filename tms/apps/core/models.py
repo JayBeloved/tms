@@ -100,11 +100,6 @@ AGREEMENT_CHOICES = (
 RUN = 1
 END = 0
 
-TENANCY_CHOICES = (
-    (RUN, 'Tenancy is Running'),
-    (END, 'Tenancy has Ended'),
-)
-
 # Nationality Choices
 NGR = "Nigerian"
 OTH = "International"
@@ -173,12 +168,21 @@ class rentals(models.Model):
     proposed_use = models.CharField(max_length=20, choices=PROPERTY_USE, default=RSD)
     date_started = models.DateField('Beginning of Rent', default=timezone.now, null=True)
     agreement_duration = models.PositiveSmallIntegerField('agreement duration', choices=AGREEMENT_CHOICES, default=YR1)
-    rental_amount = models.CharField(max_length=30)
+    rental_amount = models.FloatField('Rental Amount', max_length=40)
     date_ending = models.DateField('End of Rent', null=True)
     agreement_code = models.CharField(max_length=30, unique=True)
-    status = models.PositiveSmallIntegerField('tenancy status', choices=TENANCY_CHOICES, default=RUN)
+    remarks = models.CharField(max_length=70, null=True)
+    balance = models.FloatField('Balance Outstanding', max_length=40, null=True)
 
     def __str__(self):
-        return f"Agreement {self.agreement_code} with {self.tenant}"
+        return f"{self.tenant} - {self.property}"
 
-    
+
+class payments(models.Model):
+    rental = models.ForeignKey(rentals, on_delete=models.CASCADE, to_field='agreement_code')
+    payment_date = models.DateField('Payment Date', default=timezone.now, null=True)
+    amount = models.FloatField('Amount Paid', max_length=40)
+    payment_code = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return f"{self.rental} | N {self.amount}"

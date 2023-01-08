@@ -11,8 +11,8 @@ from django.views.generic import ListView
 
 from django.utils.decorators import method_decorator
 
-from .models import landlord, tenant, rentals, User, managed_properties
-from .forms import RentalRegForm
+from .models import landlord, tenant, rentals, User, managed_properties, payments
+from .forms import RentalRegForm, PaymentForm
 
 
 @login_required()
@@ -52,7 +52,7 @@ def new_rental(request):
             rent_tenant = form.cleaned_data.get("tenant")
             proposed_use = form.cleaned_data.get("proposed_use")
             agreement_duration = form.cleaned_data.get("agreement_duration")
-            status = form.cleaned_data.get("status")
+            remarks = "Fresh Tenancy"
             date_started = form.cleaned_data.get("date_started")
             date_ending = form.cleaned_data.get("date_ending")
             rental_amount = form.cleaned_data.get("rental_amount")
@@ -83,7 +83,8 @@ def new_rental(request):
             rt = rentals.objects.create(property=rent_property, tenant=rent_tenant, agent=agent,
                                         proposed_use=proposed_use, agreement_code=agreement_code,
                                         agreement_duration=agreement_duration, date_started=date_started,
-                                        date_ending=date_ending, rental_amount=rental_amount, status=status)
+                                        date_ending=date_ending, rental_amount=rental_amount, remarks=remarks,
+                                        balance=rental_amount)
             rt.save()
             messages.success(request, f'Tenancy Registered Successfully')
         else:
@@ -102,5 +103,80 @@ class RentalsListView(ListView):
     model = rentals
     template_name = "core/dashboards/rentals_list.html"
     context_object_name = "rentals"
+    ordering = ['id']
+    paginate_by = 5
+
+
+def new_payment(request):
+    form = PaymentForm(request.POST or None)
+
+    if request.method == 'POST':
+        # Check if the submitted form is valid
+        if form.is_valid():
+            rental = form.cleaned_data.get("rental")
+            amount = form.cleaned_data.get("amount")
+            payment_date = form.cleaned_data.get("payment_date")
+
+            #############################
+            # Generate Unique Payment Code
+            # Randomly Choose Letters for adding to code
+            def gencode():
+                char1 = random.choice(string.ascii_uppercase)
+                char2 = random.choice(string.ascii_lowercase)
+                char3 = random.choice(string.ascii_letters)
+                char4 = random.choice('1234567890')
+                char5 = random.choice(string.ascii_uppercase)
+                char6 = random.choice(string.ascii_lowercase)
+                char7 = random.choice(string.ascii_letters)
+
+                return f"pmt/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
+
+            #############################
+            pmt = gencode()
+            payment_code = pmt
+            while payments.objects.filter(payment_code=pmt):
+                pmt = gencode()
+                if not payments.objects.filter(payment_code=gencode):
+                    payment_code = gencode
+
+            pt = payments.objects.create(rental=rental, amount=amount, payment_date=payment_date,
+                                         payment_code=payment_code)
+            pt.save()
+
+            # Reflect Change in the rentals table
+            sel_rental = rentals.objects.get(id=rental.id)
+            # Clean and convert currency to integers
+            current_balance = float(str(sel_rental.balance).replace(',', ''))
+            amount_paid = float(str(amount).replace(',', ''))
+
+            sel_rental.balance = current_balance - amount_paid
+            sel_rental.save()
+
+            new_balance = float(str(sel_rental.balance).replace(',', ''))
+            # Update Remarks
+            if new_balance > 0:
+                sel_rental.remarks = f"N {new_balance} rent is outstanding"
+                sel_rental.save()
+            elif new_balance == 0:
+                sel_rental.remarks = f"Tenancy is Running"
+                sel_rental.save()
+
+            messages.success(request, f'Payment Recorded Successfully')
+        else:
+            messages.error(request, 'Something Went Wrong, Check your entries and try again.')
+
+        return HttpResponseRedirect(reverse("payments:new"))
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'core/dashboards/record_payment.html', context)
+
+
+class PaymentsListView(ListView):
+    model = payments
+    template_name = "core/dashboards/payments_list.html"
+    context_object_name = "payments"
     ordering = ['id']
     paginate_by = 5
