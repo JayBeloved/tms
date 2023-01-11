@@ -58,7 +58,7 @@
                                             <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
                                             <td>N {{ rental.rental_amount }}</td>
                                             <td><a class="btn btn-user btn-secondary btn-sm"
-                                                   href="">View</a></td>
+                                                   href="{% url 'rentals:view' rental.id %}">View</a></td>
                                         </tr>
                                         {% endif %}
                                     {% endfor %}

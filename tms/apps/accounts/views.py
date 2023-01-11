@@ -38,7 +38,7 @@ def login_view(request):
                 elif user.user_type == 2:
                     messages.success(request, 'Agent SUCCESSFUL LOGIN')
                     # return redirect("agents:dashboard")
-                    return HttpResponse("AGENT DASHBOARD")
+                    return redirect("my_admin:dashboard")
                 else:
                     msg = 'Something Went Wrong'
                     HttpResponseRedirect('landing')

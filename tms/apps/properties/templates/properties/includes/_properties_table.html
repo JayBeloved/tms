@@ -23,7 +23,8 @@
                                 <td>{{ property.property_name }}</td>
                                 <td>{{ property.address }}</td>
                                 <td>{{ property.city }}, {{ property.state }}</td>
-                                <td><a class="btn btn-user btn-secondary btn-sm">View</a></td>
+                                <td><a class="btn btn-user btn-secondary btn-sm"
+                                       href="{% url 'properties:view' property.id %}">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

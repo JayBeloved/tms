@@ -1,0 +1,134 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Tenancy Info{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Agreement Code: {{ rental.agreement_code }}</h1>
+    <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
+            class="fas fa-user-tie fa-sm text-white-50"></i> Tenancy Agreement
+    </h5>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tenancy Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Landlord: {{ rental.property.landlord.landlord_name }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Property: {{ rental.property.property_name }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Address: {{ rental.property.address }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Tenant: {{ rental.tenant.tenant_name }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Proposed Use: {{ rental.tenant.proposed_use }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Rent Amount: N {{ rental.rental_amount }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Period: {{ rental.date_started }} - {{ rental.date_ending }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Outstanding Balance: N {{ rental.balance }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Remarks: {{ rental.remarks }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table of All payments related to the Tenancy -->
+<div class="col-xl-12 col-lg-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Rent Payments</h6>
+        </div>
+        <div class="card-body">
+            {% if count > 0 %}
+            <div class="table-responsive">
+                <table class="table table-outline table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <<th>ID</th>
+                            <th>Tenancy</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.id }}</td>
+                                <td>{{ payment.rental }}</td>
+                                <td>{{ payment.payment_date }}</td>
+                                <td>{{ payment.amount }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <h5 class="m-0 font-weight-bold text-primary text-center">
+                        No Payment to Display</h5>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

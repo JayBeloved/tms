@@ -1,0 +1,61 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Admin Center{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Tenancy Ending in Three Months Or Less</h1>
+    <a href="{% url 'rentals:all' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> View All Rentals
+    </a>
+</div>
+{% endblock %}
+
+{% block counters %}
+{% if count == 0 %}
+<div class="col-xl-12 col-lg-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight-bold text-primary text-center">There are no Tenancy Ending in Three
+                Months or Less</h4>
+        </div>
+    </div>
+</div>
+{% else %}
+    {% for rental in rentals %}
+    <div class="col-xl-6 col-lg-6">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-warning">Period: {{ rental.5 }} - {{ rental.8 }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="h5 mb-0 font-weight-bold text-gray-600">
+                    Days Left : {{ rental.13 }} Days
+                </div>
+                <hr>
+                <div class="h5 mb-0 font-weight-bold text-gray-600">
+                    Rental Amount: N {{ rental.7 }}
+                </div>
+                <hr>
+                <div class="h5 mb-0 font-weight-bold text-gray-600">
+                    Balance Outstanding: N {{ rental.11 }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="h5 mb-0 font-weight-bold text-gray-600">
+                        <a href="{% url 'rentals:view' rental.0 %}"> More Information</a></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+

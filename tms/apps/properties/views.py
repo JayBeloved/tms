@@ -1,6 +1,8 @@
 import datetime
 import random
 import string
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
@@ -11,7 +13,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
-from ..core.models import managed_properties
+from ..core.models import managed_properties, tenant
 
 
 @login_required()
@@ -81,3 +83,27 @@ class PropertiesListView(ListView):
     paginate_by = 5
     group_by = "landlord"
 
+
+@login_required()
+def view_property(request, property_id):
+    if property_id is None:
+        messages.error(request, 'No Property Selected')
+        return HttpResponseRedirect(reverse("properties:all"))
+    else:
+        try:
+            sel_property = managed_properties.objects.get(id=property_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("properties:all"))
+
+        # Get Tenants in property
+        property_tenants = tenant.objects.filter(current_property=sel_property)
+        count_tenants = len(property_tenants)
+
+    context = {
+        'property': sel_property,
+        'tenants': property_tenants,
+        'count': count_tenants,
+    }
+
+    return render(request, 'properties/dashboards/view_property.html', context)

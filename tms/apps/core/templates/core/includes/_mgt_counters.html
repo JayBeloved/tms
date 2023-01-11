@@ -1,0 +1,152 @@
+<!-- Card 1 -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-d text-uppercase mb-1">
+                        <a href="{% url 'my_admin:end_one_month' %}">Tenancy Ending in 1 Month or Less</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <a href="{% url 'my_admin:end_one_month' %}">{{ one_month_count }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:end_one_month' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card 2 -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <a href="{% url 'my_admin:end_three_months' %}">Tenancy Ending in 3 Months or Less</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:end_three_months' %}">{{ three_months_count }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:end_three_months' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card 3 -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                         <a href="{% url 'my_admin:end_six_months' %}">Tenancy Ending in 6 Months or Less</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:end_six_months' %}">{{ six_months_count }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:end_six_months' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card 4 -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <a href="{% url 'my_admin:end_greater' %}">Tenancy with more than 6 months left</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:end_greater' %}">{{ count_greater }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:end_greater' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------ Payment percentage cards ---------------->
+<!-- Fully Paid Rentals -->
+<div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <a href="{% url 'my_admin:fully_paid' %}">Fully Paid Rentals</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:fully_paid' %}">{{ fully_paid }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:fully_paid' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 80% or more -->
+<div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <a href="{% url 'my_admin:eighty_percent' %}">Tenancy with 80% or more payment made</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:eighty_percent' %}">{{ count_eighty }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:eighty_percent' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 50% or more -->
+<div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <a href="{% url 'my_admin:fifty_percent' %}">Tenancy with 50% or more payment made</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:fifty_percent' %}">{{ count_fifty }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:fifty_percent' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Less than 50% -->
+<div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                        <a href="{% url 'my_admin:less_than_fifty' %}">Tenancy less than 50% payments made</a></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <a href="{% url 'my_admin:less_than_fifty' %}">{{ count_greater }}</a></div>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'my_admin:less_than_fifty' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

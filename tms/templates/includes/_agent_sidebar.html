@@ -24,22 +24,6 @@
         Personnel
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    {% if request.user.user_type == 1 %}
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'agents:all' %}" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Agents</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{% url 'agents:all' %}">Manage Agents</a>
-            </div>
-        </div>
-    </li>
-    {% endif %}
-
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'landlords:all' %}" data-toggle="collapse" data-target="#collapseUtilities"
@@ -106,14 +90,6 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'my_admin:mgt_index' %}">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Administrative Center</span></a>
-    </li>
-
     <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->
