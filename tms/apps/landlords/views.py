@@ -30,37 +30,33 @@ def register_landlord(request):
             state_of_origin = form.cleaned_data.get("state_of_origin")
             date_registered = timezone.now()
 
-            # Check email
-            if landlord.objects.filter(landlord_email=landlord_email):
-                messages.error(request, f'Email already in use by another Landlord. Use a unique email address')
-            else:
-                #############################
-                # Generate Unique Landlord Code
-                # Randomly Choose Letters for adding to code
-                def gencode():
-                    char1 = random.choice(string.ascii_uppercase)
-                    char2 = random.choice(string.ascii_lowercase)
-                    char3 = random.choice(string.ascii_letters)
-                    char4 = random.choice('1234567890')
-                    char5 = random.choice(string.ascii_uppercase)
-                    char6 = random.choice(string.ascii_lowercase)
-                    char7 = random.choice(string.ascii_letters)
+            #############################
+            # Generate Unique Landlord Code
+            # Randomly Choose Letters for adding to code
+            def gencode():
+                char1 = random.choice(string.ascii_uppercase)
+                char2 = random.choice(string.ascii_lowercase)
+                char3 = random.choice(string.ascii_letters)
+                char4 = random.choice('1234567890')
+                char5 = random.choice(string.ascii_uppercase)
+                char6 = random.choice(string.ascii_lowercase)
+                char7 = random.choice(string.ascii_letters)
 
-                    return f"lnd/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
+                return f"lnd/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
 
-                #############################
+            #############################
+            lnd = gencode()
+            landlord_code = lnd
+            while landlord.objects.filter(landlord_code=lnd):
                 lnd = gencode()
-                landlord_code = lnd
-                while landlord.objects.filter(landlord_code=lnd):
-                    lnd = gencode()
-                    if not landlord.objects.filter(landlord_code=gencode):
-                        landlord_code = gencode
+                if not landlord.objects.filter(landlord_code=gencode):
+                    landlord_code = gencode
 
-                ld = landlord.objects.create(landlord_name=landlord_name, landlord_email=landlord_email,
-                                             mobile_number=mobile_number, landlord_code=landlord_code,
-                                             state_of_origin=state_of_origin, date_registered=date_registered)
-                ld.save()
-                messages.success(request, f'Landlord Registered Successfully')
+            ld = landlord.objects.create(landlord_name=landlord_name, landlord_email=landlord_email,
+                                         mobile_number=mobile_number, landlord_code=landlord_code,
+                                         state_of_origin=state_of_origin, date_registered=date_registered)
+            ld.save()
+            messages.success(request, f'Landlord Registered Successfully')
         else:
             messages.error(request, 'Something Went Wrong, Check your entries and try again.')
 
