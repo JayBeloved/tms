@@ -21,32 +21,38 @@ from .forms import RentalRegForm, PaymentForm
 
 # User Defined Functions
 def alert():
-    # Get all rentals
-    allrentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(allrentals.values())
+    # Check if there are rentals in the database
+    check = len(rentals.objects.all())
+    if check > 0:
+        # Get all rentals
+        allrentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(allrentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # One Month or less
-    df_one_month = df_rentals[df_rentals['days_left'] <= 30]
-    count_one_month = df_one_month.shape[0]
+        # One Month or less
+        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        count_one_month = df_one_month.shape[0]
+    else:
+        df_one_month = []
+        count_one_month = 0
 
     return df_one_month.values, count_one_month
 
