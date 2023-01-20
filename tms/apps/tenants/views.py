@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
 from ..core.models import tenant
-from ..core.views import alert
+# from ..core.views import alert
 
 
 @login_required()
@@ -73,8 +73,8 @@ def register_tenant(request):
 
     context = {
         'form': form,
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
 
     return render(request, 'tenants/dashboards/tenant_register.html', context)
@@ -85,8 +85,8 @@ class TenantsListView(ListView):
     template_name = "tenants/dashboards/tenants_list.html"
     context_object_name = "tenants"
     extra_context = {
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
     ordering = ['id']
     paginate_by = 5
@@ -109,8 +109,8 @@ def tenant_info(request, tenant_id):
     context = {
         'tenant': sel_tenant,
         'form': info_form,
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
 
     return render(request, 'tenants/dashboards/tenant_info.html', context)

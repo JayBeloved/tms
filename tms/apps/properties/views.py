@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
 from ..core.models import managed_properties, tenant
-from ..core.views import alert
+# from ..core.views import alert
 
 
 @login_required()
@@ -71,8 +71,8 @@ def register_property(request):
 
     context = {
         'form': form,
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
 
     return render(request, 'properties/dashboards/property_register.html', context)
@@ -83,8 +83,8 @@ class PropertiesListView(ListView):
     template_name = "properties/dashboards/properties_list.html"
     context_object_name = "properties"
     extra_context = {
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
     ordering = ['id']
     paginate_by = 5
@@ -111,8 +111,8 @@ def view_property(request, property_id):
         'property': sel_property,
         'tenants': property_tenants,
         'count': count_tenants,
-        'alertCount': alert()[1],
-        'alerts': alert()[0],
+        # 'alertCount': alert()[1],
+        # 'alerts': alert()[0],
     }
 
     return render(request, 'properties/dashboards/view_property.html', context)
