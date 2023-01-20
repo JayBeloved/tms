@@ -207,11 +207,11 @@ def one_month(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # One Month or less
-        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        df_one_month = df_rentals[df_rentals['days_left'] <= 30].values
         count_one_month = df_one_month.shape[0]
 
     context = {
-        'rentals': df_one_month.values,
+        'rentals': df_one_month,
         'count': count_one_month,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -249,11 +249,11 @@ def three_months(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # 3 Months or less
-        df_three_months = df_rentals[df_rentals['days_left'] <= 90]
+        df_three_months = df_rentals[df_rentals['days_left'] <= 90].values
         count_three_months = df_three_months.shape[0]
 
     context = {
-        'rentals': df_three_months.values,
+        'rentals': df_three_months,
         'count': count_three_months,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -291,11 +291,11 @@ def six_months(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # 6 Months or  Less
-        df_six_months = df_rentals[df_rentals['days_left'] <= 180]
+        df_six_months = df_rentals[df_rentals['days_left'] <= 180].values
         count_six_months = df_six_months.shape[0]
 
     context = {
-        'rentals': df_six_months.values,
+        'rentals': df_six_months,
         'count': count_six_months,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -333,11 +333,11 @@ def greater_than_six_month(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # Greater than 6 months
-        df_greater = df_rentals[df_rentals['days_left'] > 180]
+        df_greater = df_rentals[df_rentals['days_left'] > 180].values
         count_greater = df_greater.shape[0]
 
     context = {
-        'rentals': df_greater.values,
+        'rentals': df_greater,
         'count': count_greater,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -375,11 +375,11 @@ def fully_paid(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # Fully Paid rentals
-        df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
+        df_fully_paid = df_rentals[df_rentals['balance'] <= 0].values
         count_fully_paid = df_fully_paid.shape[0]
 
     context = {
-        'rentals': df_fully_paid.values,
+        'rentals': df_fully_paid,
         'count': count_fully_paid,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -422,11 +422,11 @@ def eighty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # 80% or more
-        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
+        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80].values
         count_eighty = df_eighty.shape[0]
 
     context = {
-        'rentals': df_eighty.values,
+        'rentals': df_eighty,
         'count': count_eighty,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -469,11 +469,11 @@ def fifty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # 50% or more
-        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
+        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50].values
         count_fifty = df_fifty.shape[0]
 
     context = {
-        'rentals': df_fifty.values,
+        'rentals': df_fifty,
         'count': count_fifty,
         'alertCount': alert()[1],
         'alerts': alert()[0],
@@ -516,11 +516,11 @@ def less_than_fifty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # less than 50%
-        df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
+        df_lower = df_rentals[df_rentals['percentage_paid'] < 50].values
         count_lower = df_lower.shape[0]
 
     context = {
-        'rentals': df_lower.values,
+        'rentals': df_lower,
         'count': count_lower,
         'alertCount': alert()[1],
         'alerts': alert()[0],
