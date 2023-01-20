@@ -86,69 +86,80 @@ def admin_index(request):
 
 
 def management_index(request):
-    # Get all Rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    # Check if there are rentals in the database
+    check = len(rentals.objects.all())
+    count_one_month = 0
+    count_three_months = 0
+    count_six_months = 0
+    count_fully_paid = 0
+    count_greater = 0
+    count_eighty = 0
+    count_fifty = 0
+    count_lower = 0
+    if check > 0:
+        # Get all Rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
-    '''
-    Split the DataFrame to different dataframes depending on the days left.
-    One Month or less, 3 months or less, 6 months or less, Fully paid rentals,
-    80% or more paid rentals, 50% or more paid rentals, less than 50% paid rentals, Non paid rentals
-    (i.e outstanding rentals.), rentals with court cases.
-    '''
-    # One Month or less
-    df_one_month = df_rentals[df_rentals['days_left'] <= 30]
-    count_one_month = df_one_month.shape[0]
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        '''
+        Split the DataFrame to different dataframes depending on the days left.
+        One Month or less, 3 months or less, 6 months or less, Fully paid rentals,
+        80% or more paid rentals, 50% or more paid rentals, less than 50% paid rentals, Non paid rentals
+        (i.e outstanding rentals.), rentals with court cases.
+        '''
+        # One Month or less
+        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        count_one_month = df_one_month.shape[0]
 
-    # 3 Months or less
-    df_three_months = df_rentals[df_rentals['days_left'] <= 90]
-    count_three_months = df_three_months.shape[0]
+        # 3 Months or less
+        df_three_months = df_rentals[df_rentals['days_left'] <= 90]
+        count_three_months = df_three_months.shape[0]
 
-    # 6 Months or  Less
-    df_six_months = df_rentals[df_rentals['days_left'] <= 180]
-    count_six_months = df_six_months.shape[0]
+        # 6 Months or  Less
+        df_six_months = df_rentals[df_rentals['days_left'] <= 180]
+        count_six_months = df_six_months.shape[0]
 
-    # Greater than 6 months
-    df_greater = df_rentals[df_rentals['days_left'] > 180]
-    count_greater = df_greater.shape[0]
+        # Greater than 6 months
+        df_greater = df_rentals[df_rentals['days_left'] > 180]
+        count_greater = df_greater.shape[0]
 
-    # Fully Paid rentals
-    df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
-    count_fully_paid = df_fully_paid.shape[0]
+        # Fully Paid rentals
+        df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
+        count_fully_paid = df_fully_paid.shape[0]
 
-    # Create a new field that calculates the percentage of payment made
-    df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
-    df_rentals['percentage_paid'] = (df_rentals['amount_paid']/df_rentals['rental_amount']) * 100
+        # Create a new field that calculates the percentage of payment made
+        df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
+        df_rentals['percentage_paid'] = (df_rentals['amount_paid']/df_rentals['rental_amount']) * 100
 
-    # 80% or more
-    df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
-    count_eighty = df_eighty.shape[0]
+        # 80% or more
+        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
+        count_eighty = df_eighty.shape[0]
 
-    # 50% or more
-    df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
-    count_fifty = df_fifty.shape[0]
+        # 50% or more
+        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
+        count_fifty = df_fifty.shape[0]
 
-    # less than 50%
-    df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
-    count_lower = df_lower.shape[0]
+        # less than 50%
+        df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
+        count_lower = df_lower.shape[0]
 
     # Context data for display
     context = {
@@ -169,32 +180,35 @@ def management_index(request):
 
 @login_required()
 def one_month(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_one_month = []
+    count_one_month = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # One Month or less
-    df_one_month = df_rentals[df_rentals['days_left'] <= 30]
-    count_one_month = df_one_month.shape[0]
+        # One Month or less
+        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        count_one_month = df_one_month.shape[0]
 
     context = {
         'rentals': df_one_month.values,
@@ -208,32 +222,35 @@ def one_month(request):
 
 @login_required()
 def three_months(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_three_months = []
+    count_three_months = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # 3 Months or less
-    df_three_months = df_rentals[df_rentals['days_left'] <= 90]
-    count_three_months = df_three_months.shape[0]
+        # 3 Months or less
+        df_three_months = df_rentals[df_rentals['days_left'] <= 90]
+        count_three_months = df_three_months.shape[0]
 
     context = {
         'rentals': df_three_months.values,
@@ -247,32 +264,35 @@ def three_months(request):
 
 @login_required()
 def six_months(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_six_months = []
+    count_six_months = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # 6 Months or  Less
-    df_six_months = df_rentals[df_rentals['days_left'] <= 180]
-    count_six_months = df_six_months.shape[0]
+        # 6 Months or  Less
+        df_six_months = df_rentals[df_rentals['days_left'] <= 180]
+        count_six_months = df_six_months.shape[0]
 
     context = {
         'rentals': df_six_months.values,
@@ -286,32 +306,35 @@ def six_months(request):
 
 @login_required()
 def greater_than_six_month(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_greater = []
+    count_greater = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # Greater than 6 months
-    df_greater = df_rentals[df_rentals['days_left'] > 180]
-    count_greater = df_greater.shape[0]
+        # Greater than 6 months
+        df_greater = df_rentals[df_rentals['days_left'] > 180]
+        count_greater = df_greater.shape[0]
 
     context = {
         'rentals': df_greater.values,
@@ -325,32 +348,35 @@ def greater_than_six_month(request):
 
 @login_required()
 def fully_paid(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_fully_paid = []
+    count_fully_paid = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # Fully Paid rentals
-    df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
-    count_fully_paid = df_fully_paid.shape[0]
+        # Fully Paid rentals
+        df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
+        count_fully_paid = df_fully_paid.shape[0]
 
     context = {
         'rentals': df_fully_paid.values,
@@ -364,37 +390,40 @@ def fully_paid(request):
 
 @login_required()
 def eighty_percent(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_eighty = []
+    count_eighty = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # Create a new field that calculates the percentage of payment made
-    df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
-    df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
-    df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
+        # Create a new field that calculates the percentage of payment made
+        df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
+        df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
+        df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
-    # 80% or more
-    df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
-    count_eighty = df_eighty.shape[0]
+        # 80% or more
+        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
+        count_eighty = df_eighty.shape[0]
 
     context = {
         'rentals': df_eighty.values,
@@ -408,37 +437,40 @@ def eighty_percent(request):
 
 @login_required()
 def fifty_percent(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_fifty = []
+    count_fifty = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # Create a new field that calculates the percentage of payment made
-    df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
-    df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
-    df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
+        # Create a new field that calculates the percentage of payment made
+        df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
+        df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
+        df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
-    # 50% or more
-    df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
-    count_fifty = df_fifty.shape[0]
+        # 50% or more
+        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
+        count_fifty = df_fifty.shape[0]
 
     context = {
         'rentals': df_fifty.values,
@@ -452,37 +484,40 @@ def fifty_percent(request):
 
 @login_required()
 def less_than_fifty_percent(request):
-    # Get all rentals
-    all_rentals = rentals.objects.all()
-    # Create DataFrame of all Rental Agreements
-    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+    df_lower = []
+    count_lower = 0
+    if len(rentals.objects.all()) > 0:
+        # Get all rentals
+        all_rentals = rentals.objects.all()
+        # Create DataFrame of all Rental Agreements
+        df_rentals = pd.DataFrame.from_records(all_rentals.values())
 
-    # Convert date ending and date started to datetime datatype
-    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+        # Convert date ending and date started to datetime datatype
+        df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+        df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
 
-    # Add a new column today that will store the value of today's date
-    d_year = int(datetime.datetime.now().strftime('%Y'))
-    d_month = int(datetime.datetime.now().strftime('%m'))
-    d_day = int(datetime.datetime.now().strftime('%d'))
+        # Add a new column today that will store the value of today's date
+        d_year = int(datetime.datetime.now().strftime('%Y'))
+        d_month = int(datetime.datetime.now().strftime('%m'))
+        d_day = int(datetime.datetime.now().strftime('%d'))
 
-    today = datetime.datetime(d_year, d_month, d_day)
+        today = datetime.datetime(d_year, d_month, d_day)
 
-    df_rentals['today'] = np.datetime64(today)
+        df_rentals['today'] = np.datetime64(today)
 
-    # Add a new column that counts the number of days left
-    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-    # Convert to float
-    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+        # Add a new column that counts the number of days left
+        df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+        # Convert to float
+        df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
-    # Create a new field that calculates the percentage of payment made
-    df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
-    df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
-    df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
+        # Create a new field that calculates the percentage of payment made
+        df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
+        df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
+        df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
-    # less than 50%
-    df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
-    count_lower = df_lower.shape[0]
+        # less than 50%
+        df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
+        count_lower = df_lower.shape[0]
 
     context = {
         'rentals': df_lower.values,
