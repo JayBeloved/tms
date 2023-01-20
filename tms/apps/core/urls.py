@@ -4,6 +4,10 @@ from . import views
 urlpatterns = [
     path('adm/', include(([
         path('dashboard/', views.admin_index, name="dashboard"),
+        path('search/all/', views.search_index, name="search"),
+        path('search/landlord/', views.search_landlord, name="search_landlord"),
+        path('search/property/', views.search_property, name="search_property"),
+        path('search/tenant/', views.search_tenant, name="search_tenant"),
         path('admin-center/', views.management_index, name="mgt_index"),
         path('admin-center/tenancy-ending/one-month/', views.one_month, name="end_one_month"),
         path('admin-center/tenancy-ending/three-months/', views.three_months, name="end_three_months"),

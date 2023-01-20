@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
 from ..core.models import landlord, managed_properties, rentals
+from ..core.views import alert
 
 
 @login_required()
@@ -67,6 +68,8 @@ def register_landlord(request):
 
     context = {
         'form': form,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'landlords/dashboards/landlord_register.html', context)
@@ -76,6 +79,10 @@ class LandlordsListView(ListView):
     model = landlord
     template_name = "landlords/dashboards/landlords_list.html"
     context_object_name = "landlords"
+    extra_context = {
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
+    }
     ordering = ['id']
     paginate_by = 5
 
@@ -103,6 +110,8 @@ def landlord_dashboard(request, landlord_id):
         'landlord': sel_landlord,
         'rentals': landlord_rentals,
         'dbrentals': rentals,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'landlords/dashboards/landlord_dashboard.html', context)

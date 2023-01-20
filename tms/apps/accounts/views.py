@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
-
+from ..core.views import alert
 from .models import User, USERTYPE_CHOICES
 
 
@@ -134,6 +134,8 @@ def register_agent(request):
 
     context = {
         'form': form,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'accounts/dashboards/agent_register.html', context)
@@ -144,6 +146,10 @@ class AgentsListView(ListView):
     queryset = User.objects.filter(user_type=2)
     template_name = "accounts/dashboards/agents_list.html"
     context_object_name = "agents"
+    extra_context = {
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
+    }
     ordering = ['id']
     paginate_by = 5
 
@@ -157,7 +163,8 @@ def my_profile(request):
             usertype = t[1]
 
     info_form = ProfileInfoForm(instance=request.user)
-    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype})
+    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype,
+                                                                'alertCount': alert()[1], 'alerts': alert()[0]})
 
 
 @login_required()
@@ -173,7 +180,8 @@ def profile_info(request):
     else:
         u_form = ProfileInfoUpdateForm(instance=request.user)
 
-    return render(request, 'accounts/profile_details.html', {'form': u_form})
+    return render(request, 'accounts/profile_details.html', {'form': u_form, 'alertCount': alert()[1],
+                                                             'alerts': alert()[0]})
 
 
 @login_required()
@@ -193,6 +201,8 @@ def agent_info(request, agent_id):
     context = {
         'form': info_form,
         'agent': sel_agent,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
     return render(request, 'accounts/dashboards/agent_info.html', context)
 
