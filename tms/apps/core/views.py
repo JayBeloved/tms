@@ -20,35 +20,35 @@ from .forms import RentalRegForm, PaymentForm
 
 
 # User Defined Functions
-# def alert():
-#     # Get all rentals
-#     allrentals = rentals.objects.all()
-#     # Create DataFrame of all Rental Agreements
-#     df_rentals = pd.DataFrame.from_records(allrentals.values())
-#
-#     # Convert date ending and date started to datetime datatype
-#     df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
-#     df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
-#
-#     # Add a new column today that will store the value of today's date
-#     d_year = int(datetime.datetime.now().strftime('%Y'))
-#     d_month = int(datetime.datetime.now().strftime('%m'))
-#     d_day = int(datetime.datetime.now().strftime('%d'))
-#
-#     today = datetime.datetime(d_year, d_month, d_day)
-#
-#     df_rentals['today'] = np.datetime64(today)
-#
-#     # Add a new column that counts the number of days left
-#     df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
-#     # Convert to float
-#     df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
-#
-#     # One Month or less
-#     df_one_month = df_rentals[df_rentals['days_left'] <= 30]
-#     count_one_month = df_one_month.shape[0]
-#
-#     return df_one_month.values, count_one_month
+def alert():
+    # Get all rentals
+    allrentals = rentals.objects.all()
+    # Create DataFrame of all Rental Agreements
+    df_rentals = pd.DataFrame.from_records(allrentals.values())
+
+    # Convert date ending and date started to datetime datatype
+    df_rentals[['date_started']] = df_rentals[['date_started']].apply(pd.to_datetime)
+    df_rentals[['date_ending']] = df_rentals[['date_ending']].apply(pd.to_datetime)
+
+    # Add a new column today that will store the value of today's date
+    d_year = int(datetime.datetime.now().strftime('%Y'))
+    d_month = int(datetime.datetime.now().strftime('%m'))
+    d_day = int(datetime.datetime.now().strftime('%d'))
+
+    today = datetime.datetime(d_year, d_month, d_day)
+
+    df_rentals['today'] = np.datetime64(today)
+
+    # Add a new column that counts the number of days left
+    df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
+    # Convert to float
+    df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+
+    # One Month or less
+    df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+    count_one_month = df_one_month.shape[0]
+
+    return df_one_month.values, count_one_month
 
 
 @login_required()
@@ -73,8 +73,8 @@ def admin_index(request):
         'landlords_count': landlords_count,
         'property_count': property_count,
         'rentals': all_rentals,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
     return render(request, "dashboards/index.html", context)
 
@@ -154,8 +154,8 @@ def management_index(request):
         'count_eighty': count_eighty,
         'count_fifty': count_fifty,
         'count_lower': count_lower,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/mgt_index.html', context)
@@ -193,8 +193,8 @@ def one_month(request):
     context = {
         'rentals': df_one_month.values,
         'count': count_one_month,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/one_month.html', context)
@@ -232,8 +232,8 @@ def three_months(request):
     context = {
         'rentals': df_three_months.values,
         'count': count_three_months,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/three_months.html', context)
@@ -271,8 +271,8 @@ def six_months(request):
     context = {
         'rentals': df_six_months.values,
         'count': count_six_months,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/six_months.html', context)
@@ -310,8 +310,8 @@ def greater_than_six_month(request):
     context = {
         'rentals': df_greater.values,
         'count': count_greater,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/greater_than_six_months.html', context)
@@ -349,8 +349,8 @@ def fully_paid(request):
     context = {
         'rentals': df_fully_paid.values,
         'count': count_fully_paid,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/fully_paid.html', context)
@@ -393,8 +393,8 @@ def eighty_percent(request):
     context = {
         'rentals': df_eighty.values,
         'count': count_eighty,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/eighty_percent.html', context)
@@ -437,8 +437,8 @@ def fifty_percent(request):
     context = {
         'rentals': df_fifty.values,
         'count': count_fifty,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/fifty_percent.html', context)
@@ -481,8 +481,8 @@ def less_than_fifty_percent(request):
     context = {
         'rentals': df_lower.values,
         'count': count_lower,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/less_than_fifty_percent.html', context)
@@ -541,8 +541,8 @@ def new_rental(request):
 
     context = {
         'form': form,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/rental_register.html', context)
@@ -553,8 +553,8 @@ class RentalsListView(ListView):
     template_name = "core/dashboards/rentals_list.html"
     context_object_name = "rentals"
     extra_context = {
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
     ordering = ['id']
     paginate_by = 5
@@ -623,8 +623,8 @@ def new_payment(request):
 
     context = {
         'form': form,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/record_payment.html', context)
@@ -635,8 +635,8 @@ class PaymentsListView(ListView):
     template_name = "core/dashboards/payments_list.html"
     context_object_name = "payments"
     extra_context = {
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
     ordering = ['-id']
     paginate_by = 5
@@ -662,8 +662,8 @@ def view_rental(request, rental_id):
         'rental': sel_rental,
         'payments': rental_payments,
         'count': count_rental,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/view_rental.html', context)
@@ -714,8 +714,8 @@ def search_index(request):
         'tenant_count': tenant_count,
         'query': query,
         'count': count,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/search_index.html', context)
@@ -750,8 +750,8 @@ def search_landlord(request):
         'landlord_count': landlord_count,
         'query': query,
         'count': count,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/search_landlord.html', context)
@@ -786,8 +786,8 @@ def search_property(request):
         'property_count': property_count,
         'query': query,
         'count': count,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/search_property.html', context)
@@ -822,8 +822,8 @@ def search_tenant(request):
         'tenant_count': tenant_count,
         'query': query,
         'count': count,
-        # 'alertCount': alert()[1],
-        # 'alerts': alert()[0],
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'core/dashboards/search_tenant.html', context)
