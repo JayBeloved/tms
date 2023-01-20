@@ -48,13 +48,13 @@ def alert():
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # One Month or less
-        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        df_one_month = df_rentals[df_rentals['days_left'] <= 30].values
         count_one_month = df_one_month.shape[0]
     else:
         df_one_month = []
         count_one_month = 0
 
-    return df_one_month.values, count_one_month
+    return df_one_month, count_one_month
 
 
 @login_required()
