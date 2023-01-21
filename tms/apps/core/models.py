@@ -112,7 +112,7 @@ NATIONALITY_CHOICES = (
 # Model for landlords
 class landlord(models.Model):
     landlord_name = models.CharField(max_length=100, null=True)
-    landlord_email = models.EmailField(null=True)
+    landlord_email = models.EmailField(null=True, blank=True)
     mobile_number = models.CharField(max_length=15, null=True, blank=True)
     state_of_origin = models.CharField(max_length=15, choices=STATES, default="FCT")
     date_registered = models.DateField('reg_date', default=timezone.now, null=True)
@@ -142,7 +142,7 @@ class managed_properties(models.Model):
 class tenant(models.Model):
     # Primary Details
     tenant_name = models.CharField(max_length=60, null=True)
-    tenant_email = models.EmailField(null=True)
+    tenant_email = models.EmailField(null=True, blank=True)
     mobile_number = models.CharField(max_length=15, null=True, blank=True)
     current_property = models.ForeignKey(managed_properties,
                                          on_delete=models.CASCADE, to_field='property_code', null=True)
