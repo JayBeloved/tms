@@ -102,7 +102,7 @@
                                             {% for landlord in landlords %}
                                                 <tr>
                                                     <td>{{ landlord.id }}</td>
-                                                    <td>{{ landlord.landlord_name }}</td>
+                                                    <td>{{ landlord.landlord_name.upper }}</td>
                                                     <td><a class="btn btn-user btn-secondary btn-sm"
                                                            href="{% url 'landlords:dashboard' landlord.id %}">View</a></td>
                                                 </tr>

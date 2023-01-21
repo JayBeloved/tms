@@ -22,8 +22,8 @@
                         {% for rental in rentals %}
                             <tr>
                                 <td>{{ rental.id }}</td>
-                                <td>{{ rental.property }}</td>
-                                <td>{{ rental.tenant }}</td>
+                                <td>{{ rental.property.property_name.upper }}</td>
+                                <td>{{ rental.tenant.tenant_name.upper }}</td>
                                 <td>{{ rental.date_started }} -  {{ rental.date_ending }}</td>
                                 <td>N {{ rental.rental_amount }}</td>
                                 <td>N {{ rental.balance }}</td>

@@ -117,8 +117,8 @@ def register_agent(request):
 
                     ver_username = check_username(username)
 
-                    usr = User.objects.create(user_type=user_type, first_name=first_name,
-                                              last_name=last_name, email=email, password=password,
+                    usr = User.objects.create(user_type=user_type, first_name=first_name.capitalize(),
+                                              last_name=last_name.capitalize(), email=email.casefold(), password=password,
                                               username=ver_username, is_staff=is_staff, date_joined=reg_date)
                     usr.save()
 

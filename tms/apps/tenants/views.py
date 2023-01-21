@@ -58,10 +58,10 @@ def register_tenant(request):
                 if not tenant.objects.filter(tenant_code=gencode):
                     tenant_code = gencode
 
-            tn = tenant.objects.create(tenant_name=tenant_name, tenant_email=tenant_email,
-                                       mobile_number=mobile_number, next_of_kin=next_of_kin,
+            tn = tenant.objects.create(tenant_name=tenant_name.casefold(), tenant_email=tenant_email.casefold(),
+                                       mobile_number=mobile_number, next_of_kin=next_of_kin.casefold(),
                                        nok_contact=nok_contact, marital_status=marital_status,
-                                       nationality=nationality, office_address=office_address,
+                                       nationality=nationality, office_address=office_address.casefold(),
                                        current_property=current_property, tenant_code=tenant_code,
                                        industry=industry, occupation=occupation)
             tn.save()

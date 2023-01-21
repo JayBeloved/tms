@@ -52,7 +52,8 @@ def register_landlord(request):
                 if not landlord.objects.filter(landlord_code=gencode):
                     landlord_code = gencode
 
-            ld = landlord.objects.create(landlord_name=landlord_name, landlord_email=landlord_email,
+            ld = landlord.objects.create(landlord_name=landlord_name.casefold(),
+                                         landlord_email=landlord_email.casefold(),
                                          mobile_number=mobile_number, landlord_code=landlord_code,
                                          state_of_origin=state_of_origin, date_registered=date_registered)
             ld.save()

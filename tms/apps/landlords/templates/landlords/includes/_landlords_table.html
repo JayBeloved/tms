@@ -21,7 +21,7 @@
                         {% for landlord in landlords %}
                             <tr>
                                 <td>{{ landlord.id }}</td>
-                                <td>{{ landlord.landlord_name }}</td>
+                                <td>{{ landlord.landlord_name.upper }}</td>
                                 <td>{{ landlord.landlord_email }}</td>
                                 <td>{{ landlord.mobile_number }}</td>
                                 <td>{{ landlord.state_of_origin }}</td>

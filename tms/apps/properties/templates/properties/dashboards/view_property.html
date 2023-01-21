@@ -31,17 +31,17 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Landlord: {{ property.landlord.landlord_name }}
+                                Landlord: {{ property.landlord.landlord_name.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Property Name: {{ property.property_name }}
+                                Property Name: {{ property.property_name.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Address: {{ property.address }}
+                                Address: {{ property.address.title }}
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Description: {{ property.description }}
+                                Description: {{ property.description.capitalize }}
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -78,7 +78,7 @@
     </div>
 </div>
 
-<!-- Table of All payments related to the Tenancy -->
+<!-- Table of All Tenants related to the Tenancy -->
 <div class="col-xl-12 col-lg-12">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -93,7 +93,6 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Contact</th>
-                            <th>Property</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,9 +100,8 @@
                         {% for tenant in tenants %}
                             <tr>
                                 <td>{{ tenant.id }}</td>
-                                <td>{{ tenant.tenant_name }}</td>
+                                <td>{{ tenant.tenant_name.upper }}</td>
                                 <td>{{ tenant.mobile_number }}</td>
-                                <td>{{ tenant.current_property.property_name }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm"
                                        href="{% url 'tenants:info' tenant.id %}">View</a></td>
                             </tr>

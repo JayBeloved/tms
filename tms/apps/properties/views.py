@@ -57,9 +57,9 @@ def register_property(request):
                 if not managed_properties.objects.filter(property_code=gencode):
                     property_code = gencode
 
-            pt = managed_properties.objects.create(property_name=property_name, address=address,
-                                                   city=city, landlord=landlord_code,
-                                                   state=state, country=country, description=description,
+            pt = managed_properties.objects.create(property_name=property_name.casefold(), address=address.casefold(),
+                                                   city=city.casefold(), landlord=landlord_code,
+                                                   state=state, country=country, description=description.casefold(),
                                                    date_registered=date_registered, property_status=property_status,
                                                    property_code=property_code, registered_by=registered_by)
             pt.save()

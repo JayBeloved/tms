@@ -540,7 +540,7 @@ def new_rental(request):
             rent_tenant = form.cleaned_data.get("tenant")
             proposed_use = form.cleaned_data.get("proposed_use")
             agreement_duration = form.cleaned_data.get("agreement_duration")
-            remarks = "Fresh Tenancy"
+            remarks = "Fresh Tenancy".casefold()
             date_started = form.cleaned_data.get("date_started")
             date_ending = form.cleaned_data.get("date_ending")
             rental_amount = form.cleaned_data.get("rental_amount")
@@ -729,6 +729,7 @@ def search_index(request):
             return HttpResponseRedirect(reverse("my_admin:dashboard"))
         else:
             query_clean = query.replace(" ", "+")
+            query = query.casefold()
             try:
                 # Filter Landlords table to find results
                 landlords = landlord.objects.filter(landlord_name__contains=query)
@@ -776,6 +777,7 @@ def search_landlord(request):
             return HttpResponseRedirect(reverse("my_admin:dashboard"))
         else:
             query_clean = query.replace(" ", "+")
+            query = query.casefold()
             try:
                 # Filter Landlords table to find results
                 landlords = landlord.objects.filter(landlord_name__contains=query)
@@ -812,6 +814,7 @@ def search_property(request):
             return HttpResponseRedirect(reverse("my_admin:dashboard"))
         else:
             query_clean = query.replace(" ", "+")
+            query = query.casefold()
             try:
                 # Filter Landlords table to find results
                 properties = managed_properties.objects.filter(property_name__contains=query)
@@ -848,6 +851,7 @@ def search_tenant(request):
             return HttpResponseRedirect(reverse("my_admin:dashboard"))
         else:
             query_clean = query.replace(" ", "+")
+            query = query.casefold()
             try:
                 # Filter Landlords table to find results
                 tenants = tenant.objects.filter(tenant_name__contains=query)

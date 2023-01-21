@@ -102,7 +102,7 @@
                                             {% for landlord in landlords %}
                                                 <tr>
                                                     <td>{{ landlord.id }}</td>
-                                                    <td>{{ landlord.landlord_name }}</td>
+                                                    <td>{{ landlord.landlord_name.upper }}</td>
                                                     <td><a class="btn btn-user btn-secondary btn-sm"
                                                            href="{% url 'landlords:dashboard' landlord.id %}">View</a></td>
                                                 </tr>
@@ -134,8 +134,8 @@
                                         {% for property in properties %}
                                             <tr>
                                                 <td>{{ property.id }}</td>
-                                                <td>{{ property.property_name }}</td>
-                                                <td>{{ property.address }}</td>
+                                                <td>{{ property.property_name.upper }}</td>
+                                                <td>{{ property.address.title }}</td>
                                                 <td><a class="btn btn-user btn-secondary btn-sm"
                                                        href="{% url 'properties:view' property.id %}">View</a></td>
                                             </tr>
@@ -167,8 +167,8 @@
                                         {% for tenant in tenants %}
                                             <tr>
                                                 <td>{{ tenant.id }}</td>
-                                                <td>{{ tenant.tenant_name }}</td>
-                                                <td>{{ tenant.current_property.property_name }}</td>
+                                                <td>{{ tenant.tenant_name.upper }}</td>
+                                                <td>{{ tenant.current_property.property_name.upper }}</td>
                                                 <td><a class="btn btn-user btn-secondary btn-sm"
                                                        href="{% url 'tenants:info' tenant.id %}">View</a></td>
                                             </tr>

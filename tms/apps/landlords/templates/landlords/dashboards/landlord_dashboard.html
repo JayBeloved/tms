@@ -12,7 +12,7 @@
 
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{{ landlord.landlord_name }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ landlord.landlord_name.upper }}</h1>
     <a href="{% url 'landlords:all' %}" class="d-none d-sm-inline-block b-b-primary text-primary">All Landlords</a>
 </div>
 {% endblock %}
@@ -34,11 +34,11 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h4 class="m-0 font-weight-bold text-primary">{{ property.property_name }}</h4>
+                    <h4 class="m-0 font-weight-bold text-primary">{{ property.property_name.upper }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="card-subtitle">
-                        <h6 class="m-0 text-secondary">Address: <strong>{{ property.address }}</strong></h6>
+                        <h6 class="m-0 text-secondary">Address: <strong>{{ property.address.title }}</strong></h6>
                     </div>
                     <div class="p-5">
                         <div class="table-responsive">
@@ -54,7 +54,7 @@
                                     {% for rental in rentals %}
                                         {% if rental.property == property %}
                                         <tr>
-                                            <td>{{ rental.tenant.tenant_name }}</td>
+                                            <td>{{ rental.tenant.tenant_name.upper }}</td>
                                             <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
                                             <td>N {{ rental.rental_amount }}</td>
                                             <td><a class="btn btn-user btn-secondary btn-sm"

@@ -31,17 +31,17 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Landlord: {{ rental.property.landlord.landlord_name }}
+                                Landlord: {{ rental.property.landlord.landlord_name.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Property: {{ rental.property.property_name }}
+                                Property: {{ rental.property.property_name.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Address: {{ rental.property.address }}
+                                Address: {{ rental.property.address.title }}
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Tenant: {{ rental.tenant.tenant_name }}
+                                Tenant: {{ rental.tenant.tenant_name.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Remarks: {{ rental.remarks }}
+                                Remarks: {{ rental.remarks.capitalize }}
                             </div>
                         </div>
                     </div>

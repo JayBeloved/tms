@@ -20,9 +20,9 @@
                         {% for tenant in tenants %}
                             <tr>
                                 <td>{{ tenant.id }}</td>
-                                <td>{{ tenant.tenant_name }}</td>
+                                <td>{{ tenant.tenant_name.upper }}</td>
                                 <td>{{ tenant.mobile_number }}</td>
-                                <td>{{ tenant.current_property.property_name }}</td>
+                                <td>{{ tenant.current_property.property_name.upper }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm"
                                        href="{% url 'tenants:info' tenant.id %}">View</a></td>
                             </tr>
