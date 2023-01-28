@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Address: {{ property.address.title }}
+                                Address: {{ property.address.title.upper }}
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Location: {{ property.city }}, {{ property.state }}
+                                Location: {{ property.city.upper }}, {{ property.state.upper }}
                             </div>
                         </div>
                         <div class="col-sm-4">

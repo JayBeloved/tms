@@ -3,6 +3,7 @@ from ..core.models import managed_properties, STATES, tenant, STATUS_CHOICES, NA
 
 # Industry Choices
 INDUSTRIES = (
+    ("Others", "Other services"),
     ("Agric", "Agriculture, forestry, fishing, and hunting "),
     ("Mining", "Mining, quarrying, and oil and gas extraction"),
     ("Utilities", "Utilities"),
@@ -21,12 +22,12 @@ INDUSTRIES = (
     ("Health Care", "Health care and social assistance"),
     ("Arts & Ent.", "Arts, entertainment, and recreation"),
     ("Hospitality", "Accommodation and food services"),
-    ("Others", "Other services (except public administration)"),
     ("Public Admin", "Public administration"),
 )
 
 # Occupation/Job title choice
 OCCUPATION = (
+    ("Null", "____________"),
     ("Executive", "Executive or Senior Management"),
     ("Middle", "Middle Management"),
     ("First", "First Level Management"),

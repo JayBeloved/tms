@@ -36,7 +36,6 @@ STATES = (
     ("Oyo", 'Oyo'),
     ("Plateau", 'Plateau'),
     ("Sokoto", 'Sokoto'),
-    ("Sokoto", 'Sokoto'),
     ("Taraba", 'Taraba'),
     ("Yobe", 'Yobe'),
     ("Zamfara", 'Zamfara'),
@@ -86,13 +85,15 @@ YR1 = 2
 MNT18 = 3
 YR2 = 4
 YR3 = 5
-YR5 = 6
+YR4 = 6
+YR5 = 7
 AGREEMENT_CHOICES = (
     (MNT6, "6 Months"),
     (YR1, "1 Year"),
     (MNT18, "18 Months"),
     (YR2, "2 Years"),
     (YR3, "3 Years"),
+    (YR4, "4 Years"),
     (YR5, "5 Years"),
 )
 
@@ -128,7 +129,7 @@ class managed_properties(models.Model):
     city = models.CharField(max_length=100, null=True)
     state = models.CharField(max_length=15, choices=STATES, default="FCT")
     country = models.CharField(max_length=50)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     landlord = models.ForeignKey(landlord, on_delete=models.CASCADE)
     registered_by = models.ForeignKey(User, on_delete=models.CASCADE)
     date_registered = models.DateField('reg_date', default=timezone.now, null=True)
@@ -150,12 +151,12 @@ class tenant(models.Model):
     nationality = models.CharField(max_length=50, choices=NATIONALITY_CHOICES, default=NGR)
     tenant_code = models.CharField(max_length=30, unique=True, null=True)
     # Family Details
-    next_of_kin = models.CharField(max_length=70, null=True)
+    next_of_kin = models.CharField(max_length=70, null=True, blank=True)
     nok_contact = models.CharField(max_length=15, null=True, blank=True)
     # Business and other details
-    occupation = models.CharField(max_length=50, null=True)
-    industry = models.CharField(max_length=50, null=True)
-    office_address = models.TextField(null=True)
+    occupation = models.CharField(max_length=50, null=True, blank=True)
+    industry = models.CharField(max_length=50, null=True, blank=True)
+    office_address = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.tenant_name
@@ -171,7 +172,7 @@ class rentals(models.Model):
     rental_amount = models.FloatField('Rental Amount', max_length=40)
     date_ending = models.DateField('End of Rent', null=True)
     agreement_code = models.CharField(max_length=30, unique=True)
-    remarks = models.CharField(max_length=70, null=True)
+    remarks = models.CharField(max_length=70, null=True, blank=True)
     balance = models.FloatField('Balance Outstanding', max_length=40, null=True)
 
     def __str__(self):

@@ -11,9 +11,6 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
-# from django.db.models import Q
-
-# from django.utils.decorators import method_decorator
 
 from .models import landlord, tenant, rentals, User, managed_properties, payments
 from .forms import RentalRegForm, PaymentForm
@@ -48,7 +45,7 @@ def alert():
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # One Month or less
-        df_one_month = df_rentals[df_rentals['days_left'] <= 30].values
+        df_one_month = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)]
         count_one_month = df_one_month.shape[0]
     else:
         df_one_month = []
@@ -126,20 +123,24 @@ def management_index(request):
         (i.e outstanding rentals.), rentals with court cases.
         '''
         # One Month or less
-        df_one_month = df_rentals[df_rentals['days_left'] <= 30]
+        df_one_month = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)]
         count_one_month = df_one_month.shape[0]
 
         # 3 Months or less
-        df_three_months = df_rentals[df_rentals['days_left'] <= 90]
+        df_three_months = df_rentals.loc[(df_rentals.days_left <= 90) & (df_rentals.days_left > -1)]
         count_three_months = df_three_months.shape[0]
 
         # 6 Months or  Less
-        df_six_months = df_rentals[df_rentals['days_left'] <= 180]
+        df_six_months = df_rentals.loc[(df_rentals.days_left <= 180) & (df_rentals.days_left > -1)]
         count_six_months = df_six_months.shape[0]
 
         # Greater than 6 months
         df_greater = df_rentals[df_rentals['days_left'] > 180]
         count_greater = df_greater.shape[0]
+
+        # Tenancy that have expired
+        df_expired = df_rentals.loc[(df_rentals.days_left < 0)]
+        count_expired = df_expired.shape[0]
 
         # Fully Paid rentals
         df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
@@ -166,6 +167,7 @@ def management_index(request):
         'one_month_count': count_one_month,
         'three_months_count': count_three_months,
         'six_months_count': count_six_months,
+        'count_expired': count_expired,
         'fully_paid': count_fully_paid,
         'count_greater': count_greater,
         'count_eighty': count_eighty,
@@ -207,7 +209,7 @@ def one_month(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # One Month or less
-        df_one_month = df_rentals[df_rentals['days_left'] <= 30].values
+        df_one_month = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)].values
         count_one_month = df_one_month.shape[0]
 
     context = {
@@ -249,7 +251,7 @@ def three_months(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # 3 Months or less
-        df_three_months = df_rentals[df_rentals['days_left'] <= 90].values
+        df_three_months = df_rentals.loc[(df_rentals.days_left <= 90) & (df_rentals.days_left > -1)].values
         count_three_months = df_three_months.shape[0]
 
     context = {
@@ -291,7 +293,7 @@ def six_months(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # 6 Months or  Less
-        df_six_months = df_rentals[df_rentals['days_left'] <= 180].values
+        df_six_months = df_rentals.loc[(df_rentals.days_left <= 180) & (df_rentals.days_left > -1)].values
         count_six_months = df_six_months.shape[0]
 
     context = {
@@ -333,7 +335,7 @@ def greater_than_six_month(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # Greater than 6 months
-        df_greater = df_rentals[df_rentals['days_left'] > 180].values
+        df_greater = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)].values
         count_greater = df_greater.shape[0]
 
     context = {
@@ -375,7 +377,7 @@ def fully_paid(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # Fully Paid rentals
-        df_fully_paid = df_rentals[df_rentals['balance'] <= 0].values
+        df_fully_paid = df_rentals.loc[(df_rentals['balance'] <= 0) & (df_rentals.days_left > -1)].values
         count_fully_paid = df_fully_paid.shape[0]
 
     context = {
@@ -422,7 +424,7 @@ def eighty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # 80% or more
-        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80].values
+        df_eighty = df_rentals.loc[(df_rentals['percentage_paid'] >= 80) & (df_rentals.days_left > -1)].values
         count_eighty = df_eighty.shape[0]
 
     context = {
@@ -469,7 +471,7 @@ def fifty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # 50% or more
-        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50].values
+        df_fifty = df_rentals.loc[(df_rentals['percentage_paid'] >= 50) & (df_rentals.days_left > -1)].values
         count_fifty = df_fifty.shape[0]
 
     context = {
@@ -516,7 +518,7 @@ def less_than_fifty_percent(request):
         df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # less than 50%
-        df_lower = df_rentals[df_rentals['percentage_paid'] < 50].values
+        df_lower = df_rentals.loc[(df_rentals['percentage_paid'] < 50) & (df_rentals.days_left > -1)].values
         count_lower = df_lower.shape[0]
 
     context = {
