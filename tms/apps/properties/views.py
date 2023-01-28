@@ -73,6 +73,7 @@ def register_property(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
 
     return render(request, 'properties/dashboards/property_register.html', context)
@@ -85,6 +86,7 @@ class PropertiesListView(ListView):
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
     ordering = ['id']
     paginate_by = 5
@@ -113,6 +115,7 @@ def view_property(request, property_id):
         'count': count_tenants,
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
 
     return render(request, 'properties/dashboards/view_property.html', context)

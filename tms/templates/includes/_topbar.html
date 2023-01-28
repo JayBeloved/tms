@@ -67,24 +67,26 @@
                     Alerts Center
                 </h6>
                 {% if alertCount > 0 %}
-                {% for i in range(5) %}
-                    {% for alert in alerts %}
-                    <a class="dropdown-item d-flex align-items-center" href="{% url 'rentals:view' alert.0 %}">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
+                {% if range > 0 %}
+                    {% for i in range %}
+                        {% for alert in alerts %}
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'rentals:view' alert.0 %}">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">Days Left : {{ alert.13 }} Days</div>
-                            <span class="font-weight-bold"> {{ alert.10 }} </span>
-                        </div>
-                    </a>
+                            <div>
+                                <div class="small text-gray-500">Days Left : {{ alert.13 }} Days</div>
+                                <span class="font-weight-bold"> {{ alert.10 }} </span>
+                            </div>
+                        </a>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
                 <h6 class="dropdown-footer">
                     <a href="{% url 'my_admin:end_one_month' %}" class="text-primary text-center">View All</a>
                 </h6>
+                {% endif %}
                 {% else %}
                     <div class="h6 mb-2 mt-2 font-weight-bold text-center">No tenancy ending in One Month or Less</div>
                 {% endif %}

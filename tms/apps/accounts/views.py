@@ -136,6 +136,7 @@ def register_agent(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
 
     return render(request, 'accounts/dashboards/agent_register.html', context)
@@ -149,6 +150,7 @@ class AgentsListView(ListView):
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
     ordering = ['id']
     paginate_by = 5
@@ -164,7 +166,8 @@ def my_profile(request):
 
     info_form = ProfileInfoForm(instance=request.user)
     return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype,
-                                                                'alertCount': alert()[1], 'alerts': alert()[0]})
+                                                                'alertCount': alert()[1], 'alerts': alert()[0],
+                                                                'range': alert()[2]})
 
 
 @login_required()
@@ -181,7 +184,7 @@ def profile_info(request):
         u_form = ProfileInfoUpdateForm(instance=request.user)
 
     return render(request, 'accounts/profile_details.html', {'form': u_form, 'alertCount': alert()[1],
-                                                             'alerts': alert()[0]})
+                                                             'alerts': alert()[0], 'range': alert()[2]})
 
 
 @login_required()
@@ -203,6 +206,7 @@ def agent_info(request, agent_id):
         'agent': sel_agent,
         'alertCount': alert()[1],
         'alerts': alert()[0],
+        'range': alert()[2],
     }
     return render(request, 'accounts/dashboards/agent_info.html', context)
 
