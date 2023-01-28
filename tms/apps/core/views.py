@@ -51,7 +51,7 @@ def alert():
     else:
         df_one_month = []
         count_one_month = 0
-        rng = 0
+        rng = None
 
     return df_one_month, count_one_month, rng
 

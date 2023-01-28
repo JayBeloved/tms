@@ -67,7 +67,7 @@
                     Alerts Center
                 </h6>
                 {% if alertCount > 0 %}
-                {% if range > 0 %}
+                {% if range %}
                     {% for i in range %}
                         {% for alert in alerts %}
                         <a class="dropdown-item d-flex align-items-center" href="{% url 'rentals:view' alert.0 %}">
