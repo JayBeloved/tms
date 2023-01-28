@@ -46,14 +46,15 @@ def alert():
 
         # One Month or less
         df_one_month = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)]
+        rentals_list = df_rentals[:5]
         count_one_month = df_one_month.shape[0]
         rng = range(5)
     else:
-        df_one_month = []
+        rentals_list = []
         count_one_month = 0
         rng = None
 
-    return df_one_month, count_one_month, rng
+    return rentals_list, count_one_month, rng
 
 
 @login_required()

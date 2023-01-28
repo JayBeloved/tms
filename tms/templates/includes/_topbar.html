@@ -67,8 +67,6 @@
                     Alerts Center
                 </h6>
                 {% if alertCount > 0 %}
-                {% if range %}
-                    {% for i in range %}
                         {% for alert in alerts %}
                         <a class="dropdown-item d-flex align-items-center" href="{% url 'rentals:view' alert.0 %}">
                             <div class="mr-3">
@@ -82,11 +80,9 @@
                             </div>
                         </a>
                         {% endfor %}
-                    {% endfor %}
                 <h6 class="dropdown-footer">
                     <a href="{% url 'my_admin:end_one_month' %}" class="text-primary text-center">View All</a>
                 </h6>
-                {% endif %}
                 {% else %}
                     <div class="h6 mb-2 mt-2 font-weight-bold text-center">No tenancy ending in One Month or Less</div>
                 {% endif %}
