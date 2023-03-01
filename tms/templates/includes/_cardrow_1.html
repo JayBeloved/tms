@@ -3,7 +3,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                <a href="{% url 'rentals:all' %}">Rental Agreements</a></h6>
+                <a href="{% url 'rentals:all' %}">Tenancy Terrier</a></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -24,12 +24,12 @@
                                 <td>{{ rental.property }}</td>
                                 <td>{{ rental.tenant }}</td>
                                 <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
-                                <td><a class="btn btn-success btn-sm">View</a></td>
+                                <td><a class="btn btn-primary btn-sm">View</a></td>
                             </tr>
                         {% endfor %}
                     {% else %}
                     <h6 class="m-0 font-weight-bold text-primary text-center">
-                        No Agreements to Display</h6>
+                        No Tenancy to Display</h6>
                     {% endif %}
                     </tbody>
                 </table>

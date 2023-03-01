@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}Rentals{% endblock title %}
+{% block title %}Tenancy Terriers{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -12,9 +12,9 @@
 
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Rentals</h1>
+    <h1 class="h3 mb-0 text-gray-800">Tenancy Terriers</h1>
     <a href="{% url 'rentals:new' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-user fa-sm text-white-50"></i> New Rental Agreement
+            class="fas fa-user fa-sm text-white-50"></i> New Tenancy Terrier
     </a>
 </div>
 {% endblock %}

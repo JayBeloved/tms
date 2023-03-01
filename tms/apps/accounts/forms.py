@@ -27,7 +27,7 @@ class AgentRegisterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
-                'placeholder': " Agent's First Name"
+                'placeholder': " Surveyor's First Name"
             }
         ))
 
@@ -35,7 +35,7 @@ class AgentRegisterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-user',
-                'placeholder': "Agent's Last Name"
+                'placeholder': "Surveyor's Last Name"
             }
         ))
 

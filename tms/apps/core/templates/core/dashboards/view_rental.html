@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}Tenancy Info{% endblock title %}
+{% block title %}Tenancy Terrier Info{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -12,9 +12,9 @@
 
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Agreement Code: {{ rental.agreement_code }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">Terrier Code: {{ rental.agreement_code }}</h1>
     <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
-            class="fas fa-user-tie fa-sm text-white-50"></i> Tenancy Agreement
+            class="fas fa-user-tie fa-sm text-white-50"></i> Tenancy Terrier
     </h5>
 </div>
 {% endblock %}
@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="h6 mb-0 font-weight-bold text-gray-600">
-                                Proposed Use: {{ rental.tenant.proposed_use }}
+                                Proposed Use: {{ rental.proposed_use }}
                             </div>
                         </div>
                         <div class="col-sm-4">

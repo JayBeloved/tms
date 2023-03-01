@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}Agent Profile{% endblock title %}
+{% block title %}Surveyor Profile{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -14,7 +14,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{{ agent.last_name.capitalize }} {{ agent.first_name.capitalize }}</h1>
     <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
-            class="fas fa-user-tie fa-sm text-white-50"></i> Agent
+            class="fas fa-user-tie fa-sm text-white-50"></i> Surveyor
     </h5>
 </div>
 {% endblock %}

@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
-from ..core.models import managed_properties, tenant
+from ..core.models import managed_properties, tenant, rentals, payments
 from ..core.views import alert
 
 
@@ -109,10 +109,20 @@ def view_property(request, property_id):
         property_tenants = tenant.objects.filter(current_property=sel_property)
         count_tenants = len(property_tenants)
 
+        # Get Rentals attached to the property
+        property_tenancy = rentals.objects.filter(property=sel_property)
+        count_tenancies = len(property_tenancy)
+
+        # Get all payments
+        rental_payments = payments.objects.all()
+
     context = {
         'property': sel_property,
         'tenants': property_tenants,
         'count': count_tenants,
+        'tenancies': property_tenancy,
+        'tenancy_count': count_tenancies,
+        'all_payments': rental_payments,
         'alertCount': alert()[1],
         'alerts': alert()[0],
         'range': alert()[2],

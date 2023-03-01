@@ -46,15 +46,13 @@ def alert():
 
         # One Month or less
         df_one_month = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)]
-        rentals_list = df_rentals[:5]
         count_one_month = df_one_month.shape[0]
-        rng = range(5)
+        df_one_month = df_one_month.head().values
     else:
-        rentals_list = []
+        df_one_month = []
         count_one_month = 0
-        rng = None
 
-    return rentals_list, count_one_month, rng
+    return df_one_month, count_one_month
 
 
 @login_required()
@@ -66,7 +64,7 @@ def admin_index(request):
     all_landlords = landlord.objects.all()
     all_tenants = tenant.objects.all()
     all_properties = managed_properties.objects.all()
-    all_rentals = rentals.objects.all()[:5]
+    all_rentals = rentals.objects.all()[:3]
 
     property_count = all_properties.count()
     agents_count = all_agents.count()
@@ -81,7 +79,6 @@ def admin_index(request):
         'rentals': all_rentals,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
     return render(request, "dashboards/index.html", context)
 
@@ -179,7 +176,6 @@ def management_index(request):
         'count_lower': count_lower,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/mgt_index.html', context)
@@ -222,7 +218,6 @@ def one_month(request):
         'count': count_one_month,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/one_month.html', context)
@@ -265,7 +260,6 @@ def three_months(request):
         'count': count_three_months,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/three_months.html', context)
@@ -308,7 +302,6 @@ def six_months(request):
         'count': count_six_months,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/six_months.html', context)
@@ -351,7 +344,6 @@ def greater_than_six_month(request):
         'count': count_greater,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/greater_than_six_months.html', context)
@@ -394,7 +386,6 @@ def fully_paid(request):
         'count': count_fully_paid,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/fully_paid.html', context)
@@ -442,7 +433,6 @@ def eighty_percent(request):
         'count': count_eighty,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/eighty_percent.html', context)
@@ -490,7 +480,6 @@ def fifty_percent(request):
         'count': count_fifty,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/fifty_percent.html', context)
@@ -538,7 +527,6 @@ def less_than_fifty_percent(request):
         'count': count_lower,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/less_than_fifty_percent.html', context)
@@ -599,7 +587,6 @@ def new_rental(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/rental_register.html', context)
@@ -612,7 +599,6 @@ class RentalsListView(ListView):
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
     ordering = ['id']
     paginate_by = 5
@@ -683,7 +669,6 @@ def new_payment(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/record_payment.html', context)
@@ -723,7 +708,6 @@ def view_rental(request, rental_id):
         'count': count_rental,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/view_rental.html', context)
@@ -777,7 +761,6 @@ def search_index(request):
         'count': count,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/search_index.html', context)
@@ -815,7 +798,6 @@ def search_landlord(request):
         'count': count,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/search_landlord.html', context)
@@ -853,7 +835,6 @@ def search_property(request):
         'count': count,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/search_property.html', context)
@@ -891,7 +872,6 @@ def search_tenant(request):
         'count': count,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'core/dashboards/search_tenant.html', context)
