@@ -20,9 +20,10 @@ filelock
 flake8
 ipython
 isort
+gunicorn
 jedi
 jmespath
-matplotl-inline
+matplotlib-inline
 mccabe
 numpy
 openpyxl

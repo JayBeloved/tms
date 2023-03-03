@@ -60,6 +60,7 @@ virtualenv = "*"
 virtualenv-clone = "*"
 wcwidth = "*"
 whitenoise = "*"
+gunicorn = "*"
 
 [dev-packages]
 
