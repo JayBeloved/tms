@@ -75,7 +75,6 @@ def register_tenant(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'tenants/dashboards/tenant_register.html', context)
@@ -88,7 +87,6 @@ class TenantsListView(ListView):
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
     ordering = ['id']
     paginate_by = 5
@@ -113,7 +111,6 @@ def tenant_info(request, tenant_id):
         'form': info_form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'tenants/dashboards/tenant_info.html', context)

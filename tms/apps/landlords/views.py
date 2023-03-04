@@ -67,7 +67,6 @@ def register_landlord(request):
         'form': form,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'landlords/dashboards/landlord_register.html', context)
@@ -80,7 +79,6 @@ class LandlordsListView(ListView):
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
     ordering = ['id']
     paginate_by = 5
@@ -111,7 +109,6 @@ def landlord_dashboard(request, landlord_id):
         'dbrentals': rentals,
         'alertCount': alert()[1],
         'alerts': alert()[0],
-        'range': alert()[2],
     }
 
     return render(request, 'landlords/dashboards/landlord_dashboard.html', context)
