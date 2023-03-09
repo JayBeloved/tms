@@ -1,5 +1,5 @@
 from django import forms
-from .models import rentals, PROPERTY_USE, AGREEMENT_CHOICES, User, tenant, managed_properties, payments
+from .models import rentals, PROPERTY_USE, AGREEMENT_CHOICES, QUARTER_CHOICES, User, tenant, managed_properties, payments
 
 # Necessary Queryset for model choice fields
 all_agents = User.objects.filter(user_type=2)
@@ -108,16 +108,17 @@ class PaymentForm(forms.Form):
             }
         ))
 
-    payment_date = forms.DateField(
-        widget=forms.NumberInput(
+    payment_quarter = forms.ChoiceField(
+        required=False,
+        choices=QUARTER_CHOICES,
+        widget=forms.Select(
             attrs={
-                'type': 'date',
-                'class': 'form-control form-control-select',
-                'placeholder': " Select Payment Date",
+                'class': 'form-control form-control-user',
+                'placeholder': " Payment Quarter",
                 'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
             }
         ))
 
     class meta:
         model = payments
-        fields = ('rental', 'amount', 'payment_date')
+        fields = ('rental', 'amount', 'payment_quarter')

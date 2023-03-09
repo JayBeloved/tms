@@ -13,6 +13,7 @@
                             <th>Name</th>
                             <th>Address</th>
                             <th>Location</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +24,7 @@
                                 <td>{{ property.property_name.upper }}</td>
                                 <td>{{ property.address.upper }}</td>
                                 <td>{{ property.city.upper }}, {{ property.state.upper }}</td>
+                                <td>{{ property.description }}</td>
                                 <td><a class="btn btn-user btn-secondary btn-sm"
                                        href="{% url 'properties:view' property.id %}">View</a></td>
                             </tr>

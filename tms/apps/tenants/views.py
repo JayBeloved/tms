@@ -89,7 +89,7 @@ class TenantsListView(ListView):
         'alerts': alert()[0],
     }
     ordering = ['id']
-    paginate_by = 5
+    paginate_by = 10
     group_by = "current_property"
 
 

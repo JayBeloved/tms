@@ -64,7 +64,13 @@ def admin_index(request):
     all_landlords = landlord.objects.all()
     all_tenants = tenant.objects.all()
     all_properties = managed_properties.objects.all()
-    all_rentals = rentals.objects.all()[:3]
+    all_rentals = rentals.objects.all()
+    # get the recently added records
+    rental_count = len(all_rentals)
+    if rental_count > 3:
+        all_rentals = all_rentals[rental_count - 3:]
+    else:
+        all_rentals = all_rentals[:3]
 
     property_count = all_properties.count()
     agents_count = all_agents.count()
@@ -613,7 +619,7 @@ def new_payment(request):
         if form.is_valid():
             rental = form.cleaned_data.get("rental")
             amount = form.cleaned_data.get("amount")
-            payment_date = form.cleaned_data.get("payment_date")
+            payment_quarter = form.cleaned_data.get("payment_quarter")
 
             #############################
             # Generate Unique Payment Code
@@ -637,7 +643,7 @@ def new_payment(request):
                 if not payments.objects.filter(payment_code=gencode):
                     payment_code = gencode
 
-            pt = payments.objects.create(rental=rental, amount=amount, payment_date=payment_date,
+            pt = payments.objects.create(rental=rental, amount=amount, payment_quarter=payment_quarter,
                                          payment_code=payment_code)
             pt.save()
 

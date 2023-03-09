@@ -109,6 +109,19 @@ NATIONALITY_CHOICES = (
     (OTH, 'International'),
 )
 
+# Quarter Choices
+Q1 = "First Quarter"
+Q2 = "Second Quarter"
+Q3 = "Third Quarter"
+Q4 = "Fourth Quarter"
+
+QUARTER_CHOICES = (
+    (Q1, "First Quarter"),
+    (Q2, "Second Quarter"),
+    (Q3, "Third Quarter"),
+    (Q4, "Fourth Quarter"),
+)
+
 
 # Model for landlords
 class landlord(models.Model):
@@ -181,7 +194,8 @@ class rentals(models.Model):
 
 class payments(models.Model):
     rental = models.ForeignKey(rentals, on_delete=models.CASCADE, to_field='agreement_code')
-    payment_date = models.DateField('Payment Date', default=timezone.now, null=True)
+    payment_quarter = models.CharField(max_length=30, choices=QUARTER_CHOICES,
+                                       default=Q1, null=True)
     amount = models.FloatField('Amount Paid', max_length=40)
     payment_code = models.CharField(max_length=30, unique=True)
 
