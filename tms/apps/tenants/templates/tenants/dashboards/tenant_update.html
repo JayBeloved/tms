@@ -27,7 +27,7 @@
             <div class="card-header py-3">
                 <div class="d-sm-flex align-items-center justify-content-between mb-0">
                     <h6 class="m-0 font-weight-bold text-primary">Update Tenant Information</h6>
-                    <a href="{% url 'tenants:info' %}" class="text-primary d-none d-sm-inline-block h6">
+                    <a href="{% url 'tenants:info' tenant.id %}" class="text-primary d-none d-sm-inline-block h6">
                         Go Back</a>
                 </div>
             </div>
