@@ -114,3 +114,33 @@ def tenant_info(request, tenant_id):
     }
 
     return render(request, 'tenants/dashboards/tenant_info.html', context)
+
+
+@login_required()
+def update_tenant(request, tenant_id):
+    if tenant_id is None:
+        messages.error(request, 'No Tenant Selected')
+        return HttpResponseRedirect(reverse("tenant:all"))
+    else:
+        try:
+            sel_tenant = tenant.objects.get(id=tenant_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("tenants:all"))
+
+        # Check for POST request
+        if request.POST:
+            u_form = TenantUpdateForm(request.POST, instance=sel_tenant)
+
+            if u_form.is_valid():
+                u_form.save()
+                messages.success(request, 'Tenant Details Updated Successfully.')
+                return redirect('tenants:view', tenant_id)
+            else:
+                messages.error(request, 'Something Went Wrong, Unable to update Tenants Details.')
+        else:
+            u_form = TenantUpdateForm(instance=sel_tenant)
+    return render(request, 'tenants/dashboards/tenant_update.html', {'form': u_form, 'tenant': sel_tenant,
+                                                                     'alertCount': alert()[1], 'alerts': alert()[0]})
+
+

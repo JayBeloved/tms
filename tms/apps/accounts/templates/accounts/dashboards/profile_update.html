@@ -1,6 +1,6 @@
 {% extends 'layout/blank.html' %}
 
-{% block title %}User Profile{% endblock title %}
+{% block title %}Update User Profile{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -13,9 +13,8 @@
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Hello, {{ request.user.last_name.capitalize }} {{ request.user.first_name.capitalize }}</h1>
-    <a href="{% url 'accounts:profile_update' %}"><h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
-            class="fas fa-user-tie fa-sm text-white-50"></i> Edit Profile
-    </h5></a>
+    <a href="{% url 'accounts:profile' %}">
+    <h6 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Back to Profile</h6></a>
 </div>
 {% endblock %}
 
@@ -24,28 +23,27 @@
     <!-- Profile Display Form -->
     <div class="col-xl-8 col-lg-7">
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
-                <h6 class="m-0 font-weight-bold text-primary">Primary Details</h6>
-                <h6 class="d-none d-sm-inline-block text-primary text-center"><i
-                class="fas fa-user-tie fa-sm text-primary-50"></i> {{ usertype }}
-                </h6>
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Update Primary Details</h6>
             </div>
             <div class="card-body">
                 <div class="p-5">
-                    <form action="{% url 'accounts:profile' %}" class="user" method="get">
+                    <form action="{% url 'accounts:profile_update' %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value='1' name="formId">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">First Name</label>
-                                    {{ form.first_name }}
+                                    {{ u_form.first_name }}
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Last Name</label>
-                                    {{ form.last_name }}
+                                    {{ u_form.last_name }}
                                 </div>
                             </div>
                         </div>
@@ -55,17 +53,19 @@
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Username</label>
-                                    {{ form.username }}
+                                    {{ u_form.username }}
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Email</label>
-                                    {{ form.email }}
+                                    {{ u_form.email }}
                                 </div>
                             </div>
                         </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Update Details</button>
 
                     </form>
                 </div>
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
+    <!-- Update Profile -->
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -81,6 +81,16 @@
             </div>
             <div class="card-body">
                 <img src="{{ request.user.profile.image.url }}" class="img-fluid img-square" alt="Profile Image">
+                <div class="my-2">
+                    <form class="user" method="POST" action="{% url 'accounts:profile_update' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" value='2' name="formId">
+                        <div class="form-group">
+                          {{ p_form.image }}
+                        </div>
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Update</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

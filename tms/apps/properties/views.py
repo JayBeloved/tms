@@ -126,3 +126,32 @@ def view_property(request, property_id):
     }
 
     return render(request, 'properties/dashboards/view_property.html', context)
+
+
+@login_required()
+def update_property(request, property_id):
+    if property_id is None:
+        messages.error(request, 'No Rental Selected')
+        return HttpResponseRedirect(reverse("properties:all"))
+    else:
+        try:
+            sel_property = managed_properties.objects.get(id=property_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("properties:all"))
+
+        # Check for POST request
+        if request.POST:
+            u_form = PropertyUpdateForm(request.POST, instance=sel_property)
+
+            if u_form.is_valid():
+                u_form.save()
+                messages.success(request, 'Property Details Updated Successfully.')
+                return redirect('properties:view', property_id)
+            else:
+                messages.error(request, 'Something Went Wrong, Unable to update Property Details.')
+        else:
+            u_form = PropertyUpdateForm(instance=sel_property)
+    return render(request, 'properties/dashboards/property_update.html', {'form': u_form, 'property': sel_property,
+                                                                          'alertCount': alert()[1], 'alerts': alert()[0]})
+

@@ -148,6 +148,116 @@ class TenantRegForm(forms.Form):
                   'nationality', 'office_address', "current_property", "industry", "occupation")
 
 
+# Form for Tenant Update
+class TenantUpdateForm(forms.ModelForm):
+    tenant_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Tenant Name"
+            }
+        ))
+
+    tenant_email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': "Tenant Email",
+            }
+        ))
+
+    mobile_number = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Tenant Mobile Number"
+            }
+        ))
+
+    next_of_kin = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Next of Kin Full Name"
+            }
+        ))
+
+    nok_contact = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Next of Kin Mobile Number"
+            }
+        ))
+
+    marital_status = forms.ChoiceField(
+        required=False,
+        choices=MARITAL_STATUS,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    nationality = forms.ChoiceField(
+        required=False,
+        choices=NATIONALITY_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    office_address = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': 'Enter Office Address (for individuals).'
+            }
+        ))
+
+    current_property = forms.ModelChoiceField(
+        queryset=all_properties,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    industry = forms.ChoiceField(
+        required=False,
+        choices=INDUSTRIES,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    occupation = forms.ChoiceField(
+        required=False,
+        choices=OCCUPATION,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    class Meta:
+        model = tenant
+        fields = ('tenant_name', 'tenant_email', 'mobile_number', 'next_of_kin', 'nok_contact', 'marital_status',
+                  'nationality', 'office_address', "current_property", "industry", "occupation")
+
+
 class TenantInfoForm(forms.ModelForm):
     tenant_name = forms.CharField(
         widget=forms.TextInput(

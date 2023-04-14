@@ -12,7 +12,13 @@
 
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{{ landlord.landlord_name.upper }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ landlord.landlord_name.upper }}
+        <a href="{% url 'landlords:update' landlord.id %}">
+            <span class="user">
+                <button class="btn btn-primary btn-user btn-sm">Edit Landlord Details</button>
+            </span>
+        </a>
+    </h1>
     <a href="{% url 'landlords:all' %}" class="d-none d-sm-inline-block b-b-primary text-primary">All Landlords</a>
 </div>
 {% endblock %}
@@ -70,5 +76,6 @@
         </div>
     {% endfor %}
     {% endif %}
+</div>
 </div>
 {% endblock %}

@@ -18,5 +18,6 @@ urlpatterns = [
 
     path('user/', include(([
                 path('profile/', views.my_profile, name="profile"),
+                path('profile/update/', views.profile_update, name="profile_update")
             ], 'tms'), namespace='accounts')),
 ]

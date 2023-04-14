@@ -24,10 +24,11 @@ urlpatterns = [
              name="less_than_fifty"),
     ], 'tms'), namespace='my_admin')),
 
-    path('rentals/', include(([
+    path('tenancy-terrier/', include(([
         path('new/', views.new_rental, name="new"),
         path('all/', views.RentalsListView.as_view(), name="all"),
-        path('view/<int:rental_id>/', views.view_rental, name="view")
+        path('view/<int:rental_id>/', views.view_rental, name="view"),
+        path('update/<int:rental_id>/', views.update_rental, name='update')
     ], 'tms'), namespace='rentals')),
 
     path('payments/', include(([

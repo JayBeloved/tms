@@ -1,0 +1,81 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Update Landlord Details{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+{% include 'landlords/includes/_page_heading.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="text-center {{ messages.tags }} animate__animated
+                    animate__fadeIn animate__delay-3s">{{ message }}</h5>
+                {% endfor %}
+            {% endif %}
+            <div class="card-header py-3">
+                <div class="d-sm-flex align-items-center justify-content-between mb-0">
+                    <h6 class="m-0 font-weight-bold text-primary">Update Landlord Information</h6>
+                    <a href="{% url 'landlords:dashboard' landlord.id %}" class="text-primary d-none d-sm-inline-block h6">
+                        Go Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'landlords:update' landlord.id %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Name</label>
+                                    {{ form.landlord_name }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Email</label>
+                                    {{ form.landlord_email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Contact Number</label>
+                                    {{ form.mobile_number }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">State</label>
+                                    {{ form.state_of_origin }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Update</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

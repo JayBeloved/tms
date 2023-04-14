@@ -1,0 +1,105 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}Edit Tenancy Terrier{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+{% include 'core/includes/_page_heading.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="text-center {{ messages.tags }} animate__animated
+                    animate__fadeIn animate__delay-3s">{{ message }}</h5>
+                {% endfor %}
+            {% endif %}
+            <div class="card-header py-3">
+                <div class="d-sm-flex align-items-center justify-content-between mb-0">
+                    <h6 class="m-0 font-weight-bold text-primary">Update Tenancy Terrier</h6>
+                    <a href="{% url 'rentals:view' rental.id %}" class="text-primary d-none d-sm-inline-block h6">
+                        Go Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <form action="{% url 'rentals:update' rental.id %}" class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Select Property</label>
+                                    {{ form.property }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Select Tenant</label>
+                                    {{ form.tenant }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Rental Amount <strong>(N)</strong></label>
+                                    {{ form.rental_amount }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Period Start</label>
+                                    {{ form.date_started }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Period End</label>
+                                    {{ form.date_ending }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Proposed Use (optional)</label>
+                                    {{ form.proposed_use }}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Agreement Length (optional)</label>
+                                    {{ form.agreement_duration }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Update</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

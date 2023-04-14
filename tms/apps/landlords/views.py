@@ -112,3 +112,33 @@ def landlord_dashboard(request, landlord_id):
     }
 
     return render(request, 'landlords/dashboards/landlord_dashboard.html', context)
+
+
+@login_required()
+def update_landlord(request, landlord_id):
+    if landlord_id is None:
+        messages.error(request, 'No Landlord Selected')
+        return HttpResponseRedirect(reverse("landlords:all"))
+    else:
+        try:
+            sel_landlord = landlord.objects.get(id=landlord_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("landlords:all"))
+
+        # Check for POST request
+        if request.POST:
+            u_form = LandlordUpdateForm(request.POST, instance=sel_landlord)
+
+            if u_form.is_valid():
+                u_form.save()
+                messages.success(request, 'Landlord Details Updated Successfully.')
+                return redirect('landlords:dashboard', landlord_id)
+            else:
+                messages.error(request, 'Something Went Wrong, Unable to update Landlord Details.')
+        else:
+            u_form = LandlordUpdateForm(instance=sel_landlord)
+    return render(request, 'landlords/dashboards/landlord_update.html', {'form': u_form, 'landlord': sel_landlord,
+                                                                         'alertCount': alert()[1], 'alerts': alert()[0]})
+
+

@@ -14,9 +14,9 @@
 {% block page_heading %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Property Code: {{ property.property_code }}</h1>
-    <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i
-            class="fas fa-user-tie fa-sm text-white-50"></i> Properties
-    </h5>
+    <a href="{% url 'properties:all' %}"> <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm">
+        All Properties
+    </h5></a>
 </div>
 {% endblock %}
 
@@ -25,7 +25,11 @@
     <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Property Information</h6>
+                 <div class="d-sm-flex align-items-center justify-content-between mb-0">
+                    <h6 class="m-0 font-weight-bold text-primary">Property Information</h6>
+                    <a href="{% url 'properties:update' property.id %}" class="text-primary d-none d-sm-inline-block h6">
+                        Edit Property Details</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="p-5">

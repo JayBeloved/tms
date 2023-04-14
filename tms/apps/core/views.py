@@ -6,14 +6,14 @@ import numpy as np
 
 from django.core.exceptions import ObjectDoesNotExist
 # from django.utils import timezone
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 
 from .models import landlord, tenant, rentals, User, managed_properties, payments
-from .forms import RentalRegForm, PaymentForm
+from .forms import RentalRegForm, PaymentForm, RentalUpdateForm
 
 
 # User Defined Functions
@@ -717,6 +717,34 @@ def view_rental(request, rental_id):
     }
 
     return render(request, 'core/dashboards/view_rental.html', context)
+
+
+@login_required()
+def update_rental(request, rental_id):
+    if rental_id is None:
+        messages.error(request, 'No Rental Selected')
+        return HttpResponseRedirect(reverse("rentals:all"))
+    else:
+        try:
+            sel_rental = rentals.objects.get(id=rental_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("rentals:all"))
+
+        # Check for POST request
+        if request.POST:
+            u_form = RentalUpdateForm(request.POST, instance=sel_rental)
+
+            if u_form.is_valid():
+                u_form.save()
+                messages.success(request, 'Tenancy Terrier Details Updated Successfully.')
+                return redirect('rentals:view', rental_id)
+            else:
+                messages.error(request, 'Something Went Wrong, Unable to update Tenancy Terrier Details.')
+        else:
+            u_form = RentalUpdateForm(instance=sel_rental)
+    return render(request, 'core/dashboards/rental_update.html', {'form': u_form, 'rental': sel_rental,
+                                                                  'alertCount': alert()[1], 'alerts': alert()[0]})
 
 
 @login_required()
