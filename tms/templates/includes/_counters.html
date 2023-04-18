@@ -1,75 +1,135 @@
-<!-- Card 1 -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        <a href="{% url 'agents:all' %}">Registered Surveyors</a></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <a href="{% url 'agents:all' %}">{{ agents_count }}</a></div>
-                </div>
-                <div class="col-auto">
-                    <a href="{% url 'agents:all' %}"><i class="fas fa-user-tie fa-2x text-gray-300"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Card 2 -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-success shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        <a href="{% url 'landlords:all' %}">Landlords</a></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <a href="{% url 'landlords:all' %}">{{ landlords_count }}</a></div>
-                </div>
-                <div class="col-auto">
-                    <a href="{% url 'landlords:all' %}"><i class="fas fa-user fa-2x text-gray-300"></i></a>
+{% if request.user.user_type == 1 %}
+    <!-- Card 1 -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <a href="{% url 'agents:all' %}">Registered Surveyors</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a href="{% url 'agents:all' %}">{{ agents_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'agents:all' %}"><i class="fas fa-user-tie fa-2x text-gray-300"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Card 3 -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-info shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                         <a href="{% url 'properties:all' %}">Properties</a></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <a href="{% url 'properties:all' %}">{{ property_count }}</a></div>
-                </div>
-                <div class="col-auto">
-                    <a href="{% url 'properties:all' %}"><i class="fas fa-building fa-2x text-gray-300"></i></a>
+    <!-- Card 2 -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <a href="{% url 'landlords:all' %}">Landlords</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'landlords:all' %}">{{ landlords_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'landlords:all' %}"><i class="fas fa-user fa-2x text-gray-300"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Card 4 -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        <a href="{% url 'tenants:all' %}">Tenants</a></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <a href="{% url 'tenants:all' %}">{{ tenants_count }}</a></div>
-                </div>
-                <div class="col-auto">
-                    <a href="{% url 'tenants:all' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+    <!-- Card 3 -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                             <a href="{% url 'properties:all' %}">Properties</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'properties:all' %}">{{ property_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'properties:all' %}"><i class="fas fa-building fa-2x text-gray-300"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Card 4 -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <a href="{% url 'tenants:all' %}">Tenants</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'tenants:all' %}">{{ tenants_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'tenants:all' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% elif request.user.user_type == 2 %}
+    <!-- Card 1 -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <a href="{% url 'landlords:all' %}">Landlords</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'landlords:all' %}">{{ landlords_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'landlords:all' %}"><i class="fas fa-user fa-2x text-gray-300"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                             <a href="{% url 'properties:all' %}">Properties</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'properties:all' %}">{{ property_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'properties:all' %}"><i class="fas fa-building fa-2x text-gray-300"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <a href="{% url 'tenants:all' %}">Tenants</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             <a href="{% url 'tenants:all' %}">{{ tenants_count }}</a></div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'tenants:all' %}"><i class="fas fa-users fa-2x text-gray-300"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

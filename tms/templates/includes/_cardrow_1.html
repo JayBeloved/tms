@@ -45,6 +45,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Registrations</h6>
         </div>
         <div class="card-body">
+            {% if request.user.user_type == 1 %}
             <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'agents:registration' %}">
                 <span class="icon text-white-50">
                     <i class="fas fa-user-tie"></i>
@@ -52,6 +53,7 @@
                 <span class="text">Register New Surveyor</span>
             </a>
             <div class="my-2"></div>
+            {% endif %}
              <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'landlords:registration' %}">
                 <span class="icon text-white-50">
                     <i class="fas fa-user"></i>

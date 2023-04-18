@@ -1,6 +1,7 @@
 {% extends 'layout/blank.html' %}
+{% load filter_tags %}
 
-{% block title %}Register Agent{% endblock title %}
+{% block title %}Landlords{% endblock title %}
 
 {% block sidebar %}
 {% include 'includes/_admin_sidebar.html' %}
@@ -20,5 +21,5 @@
 {% endblock %}
 
 {% block content %}
-{% include 'landlords/includes/_landlords_table.html' %}
+    {% get_landlords request %}
 {% endblock %}

@@ -87,18 +87,26 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Landlord</label>
+                                    <label class="float-label text-primary">
+                                        Current Landlord: {{ property.landlord.landlord_name }}</label>
                                     {{ form.landlord }}
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Status</label>
                                     {{ form.property_status }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label text-primary">Surveyor-in-Charge</label>
+                                    {{ form.registered_by }}
                                 </div>
                             </div>
                         </div>

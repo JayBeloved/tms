@@ -1,5 +1,5 @@
 from django import forms
-from ..core.models import managed_properties, STATES, landlord, STATUS_CHOICES
+from ..core.models import managed_properties, STATES, landlord, STATUS_CHOICES, User
 
 # Country Choices
 NGR = "Nigeria"
@@ -10,6 +10,8 @@ COUNTRY_CHOICES = (
 )
 
 all_landlord = landlord.objects.all()
+
+all_surveyors = User.objects.filter(user_type=2)
 
 
 # Form for Property Registration
@@ -86,9 +88,20 @@ class PropertyRegForm(forms.Form):
             }
         ))
 
+    registered_by = forms.ModelChoiceField(
+        queryset=all_surveyors,
+        to_field_name="username",
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
     class meta:
         model = managed_properties
-        fields = ('property_name', 'address', 'city', 'state', 'country', 'description', 'landlord', 'property_status')
+        fields = ('property_name', 'address', 'city', 'state', 'country', 'description',
+                  'landlord', 'property_status', 'registered_by')
 
 
 # Form for Property Update
@@ -165,6 +178,17 @@ class PropertyUpdateForm(forms.ModelForm):
             }
         ))
 
+    registered_by = forms.ModelChoiceField(
+        queryset=all_surveyors,
+        to_field_name="username",
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-select',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
     class Meta:
         model = managed_properties
-        fields = ('property_name', 'address', 'city', 'state', 'country', 'description', 'landlord', 'property_status')
+        fields = ('property_name', 'address', 'city', 'state', 'country', 'description',
+                  'landlord', 'property_status', 'registered_by')

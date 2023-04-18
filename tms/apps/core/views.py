@@ -57,25 +57,50 @@ def alert():
 
 @login_required()
 def admin_index(request):
-    # User defined functions
-
-    # Structure Counter
-    all_agents = User.objects.filter(user_type=2)
-    all_landlords = landlord.objects.all()
-    all_tenants = tenant.objects.all()
-    all_properties = managed_properties.objects.all()
+    # Set Default Count
     all_rentals = rentals.objects.all()
-    # get the recently added records
-    rental_count = len(all_rentals)
-    if rental_count > 3:
-        all_rentals = all_rentals[rental_count - 3:]
-    else:
-        all_rentals = all_rentals[:3]
+    rental_count = 0
+    property_count = 0
+    agents_count = 0
+    landlords_count = 0
+    tenants_count = 0
+    """
+    Show all data if User is an admin, but filtered data for surveyors
+    """
+    # Admin Structure Counter
+    if request.user.user_type == 1:
+        all_agents = User.objects.filter(user_type=2)
+        all_landlords = landlord.objects.all()
+        all_tenants = tenant.objects.all()
+        all_properties = managed_properties.objects.all()
+        all_rentals = rentals.objects.all()
+        # get the recently added records
+        rental_count = len(all_rentals)
+        if rental_count > 3:
+            all_rentals = all_rentals[rental_count - 3:]
+        else:
+            all_rentals = all_rentals[:3]
 
-    property_count = all_properties.count()
-    agents_count = all_agents.count()
-    landlords_count = all_landlords.count()
-    tenants_count = all_tenants.count()
+        property_count = all_properties.count()
+        agents_count = all_agents.count()
+        landlords_count = all_landlords.count()
+        tenants_count = all_tenants.count()
+    # For Surveyors
+    elif request.user.user_type == 2:
+        all_properties = managed_properties.objects.filter(registered_by=request.user)
+        all_landlords = set([p.landlord for p in all_properties])
+        all_tenants = set([t for t in tenant.objects.all() if t.current_property in all_properties])
+        all_rentals = [r for r in rentals.objects.all() if r.property in all_properties]
+        # get the recently added records
+        rental_count = len(all_rentals)
+        if rental_count > 3:
+            all_rentals = all_rentals[rental_count - 3:]
+        else:
+            all_rentals = all_rentals[:3]
+
+        property_count = all_properties.count()
+        landlords_count = all_landlords.__len__()
+        tenants_count = all_tenants.__len__()
 
     context = {
         'tenants_count': tenants_count,
@@ -100,6 +125,7 @@ def management_index(request):
     count_eighty = 0
     count_fifty = 0
     count_lower = 0
+    count_expired = 0
     if check > 0:
         # Get all Rentals
         all_rentals = rentals.objects.all()
@@ -123,6 +149,13 @@ def management_index(request):
         df_rentals['days_left'] = df_rentals['date_ending'] - df_rentals['today']
         # Convert to float
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
+
+        # Tenancy that have expired
+        df_expired = df_rentals.loc[(df_rentals.days_left < 0)]
+        count_expired = df_expired.shape[0]
+
+        # Filter out tenancies that have expired
+        df_rentals = df_rentals[df_rentals['days_left'] > -1]
         '''
         Split the DataFrame to different dataframes depending on the days left.
         One Month or less, 3 months or less, 6 months or less, Fully paid rentals,
@@ -144,10 +177,6 @@ def management_index(request):
         # Greater than 6 months
         df_greater = df_rentals[df_rentals['days_left'] > 180]
         count_greater = df_greater.shape[0]
-
-        # Tenancy that have expired
-        df_expired = df_rentals.loc[(df_rentals.days_left < 0)]
-        count_expired = df_expired.shape[0]
 
         # Fully Paid rentals
         df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
@@ -342,7 +371,7 @@ def greater_than_six_month(request):
         df_rentals['days_left'] = df_rentals['days_left'] / np.timedelta64(1, 'D')
 
         # Greater than 6 months
-        df_greater = df_rentals.loc[(df_rentals.days_left <= 30) & (df_rentals.days_left > -1)].values
+        df_greater = df_rentals.loc[(df_rentals.days_left > 180) & (df_rentals.days_left > -1)].values
         count_greater = df_greater.shape[0]
 
     context = {

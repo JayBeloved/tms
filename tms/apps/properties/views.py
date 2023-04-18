@@ -33,7 +33,7 @@ def register_property(request):
             landlord_code = form.cleaned_data.get("landlord")
             property_status = form.cleaned_data.get("property_status")
             date_registered = datetime.datetime.now()
-            registered_by = request.user
+            registered_by = form.cleaned_data.get("registered_by")
 
             #############################
             # Generate Unique Property Code

@@ -1,5 +1,7 @@
 {% extends 'layout/blank.html' %}
 
+{% load filter_tags %}
+
 {% block title %}Tenancy Terriers{% endblock title %}
 
 {% block sidebar %}
@@ -20,5 +22,5 @@
 {% endblock %}
 
 {% block content %}
-{% include 'core/includes/_payments_table.html' %}
+    {% fetch_payments request %}
 {% endblock %}

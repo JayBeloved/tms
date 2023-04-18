@@ -1,5 +1,7 @@
 {% extends 'layout/blank.html' %}
 
+{% load filter_tags %}
+
 {% block title %}All Tenants{% endblock title %}
 
 {% block sidebar %}
@@ -20,5 +22,5 @@
 {% endblock %}
 
 {% block content %}
-{% include 'tenants/includes/_tenants_table.html' %}
+    {% get_tenants request %}
 {% endblock %}
