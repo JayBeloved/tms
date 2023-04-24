@@ -1,5 +1,4 @@
 {% extends 'layout/blank.html' %}
-{% load filter_tags %}
 
 {% block title %}Landlords{% endblock title %}
 
@@ -21,5 +20,5 @@
 {% endblock %}
 
 {% block content %}
-    {% get_landlords request %}
+    {% include 'landlords/includes/_landlords_table.html' %}
 {% endblock %}

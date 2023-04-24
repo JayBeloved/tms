@@ -3,11 +3,14 @@ import random
 import string
 import pandas as pd
 import numpy as np
+import os
+import tempfile
+import zipfile
 
 from django.core.exceptions import ObjectDoesNotExist
 # from django.utils import timezone
 from django.shortcuts import render, reverse, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
@@ -53,6 +56,40 @@ def alert():
         count_one_month = 0
 
     return df_one_month, count_one_month
+
+
+def export_to_csv(dataframes):
+    zip_file = tempfile.TemporaryFile(mode='w+b')
+    with zipfile.ZipFile(zip_file, mode='w') as z:
+        for i, df in enumerate(dataframes):
+            csv_file = f'dataframe_{i}.csv'
+            z.writestr(csv_file, df.to_csv(index=False))
+    zip_file.seek(0)
+    return zip_file
+
+
+@login_required()
+def export_data(request):
+    # Get all the data in the models
+    all_landlords = landlord.objects.all()
+    all_properties = managed_properties.objects.all()
+    all_tenants = tenant.objects.all()
+    all_rentals = rentals.objects.all()
+
+    # Convert the queryset to pandas dataframe
+    df_landlords = pd.DataFrame.from_records(all_landlords.values())
+    df_properties = pd.DataFrame.from_records(all_properties.values())
+    df_tenants = pd.DataFrame.from_records(all_tenants.values())
+    df_rentals = pd.DataFrame.from_records(all_rentals.values())
+
+    # Create a list of dataframes
+    df_list = [df_landlords, df_properties, df_tenants, df_rentals]
+
+    # Export dataframes to zip file using the export function above
+    zip_file = export_to_csv(df_list)
+    response = HttpResponse(zip_file, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=dataframes.zip'
+    return response
 
 
 @login_required()
@@ -154,8 +191,6 @@ def management_index(request):
         df_expired = df_rentals.loc[(df_rentals.days_left < 0)]
         count_expired = df_expired.shape[0]
 
-        # Filter out tenancies that have expired
-        df_rentals = df_rentals[df_rentals['days_left'] > -1]
         '''
         Split the DataFrame to different dataframes depending on the days left.
         One Month or less, 3 months or less, 6 months or less, Fully paid rentals,
@@ -179,23 +214,24 @@ def management_index(request):
         count_greater = df_greater.shape[0]
 
         # Fully Paid rentals
-        df_fully_paid = df_rentals[df_rentals['balance'] <= 0]
+        df_fully_paid = df_rentals.loc[(df_rentals['balance'] <= 0) & (df_rentals.days_left > -1)]
         count_fully_paid = df_fully_paid.shape[0]
 
         # Create a new field that calculates the percentage of payment made
         df_rentals['amount_paid'] = df_rentals['rental_amount'] - df_rentals['balance']
-        df_rentals['percentage_paid'] = (df_rentals['amount_paid']/df_rentals['rental_amount']) * 100
+        df_rentals['percentage_paid'] = (df_rentals['amount_paid'] / df_rentals['rental_amount']) * 100
+        df_rentals['percentage_paid'] = round(df_rentals['percentage_paid'], 1)
 
         # 80% or more
-        df_eighty = df_rentals[df_rentals['percentage_paid'] >= 80]
+        df_eighty = df_rentals.loc[(df_rentals['percentage_paid'] >= 80) & (df_rentals.days_left > -1)]
         count_eighty = df_eighty.shape[0]
 
         # 50% or more
-        df_fifty = df_rentals[df_rentals['percentage_paid'] >= 50]
+        df_fifty = df_rentals.loc[(df_rentals['percentage_paid'] >= 50) & (df_rentals.days_left > -1)]
         count_fifty = df_fifty.shape[0]
 
         # less than 50%
-        df_lower = df_rentals[df_rentals['percentage_paid'] < 50]
+        df_lower = df_rentals.loc[(df_rentals['percentage_paid'] <= 49) & (df_rentals.days_left > -1)]
         count_lower = df_lower.shape[0]
 
     # Context data for display
@@ -631,12 +667,21 @@ class RentalsListView(ListView):
     model = rentals
     template_name = "core/dashboards/rentals_list.html"
     context_object_name = "rentals"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.user_type == 2:
+            # Get the tenancy terriers on the properties assigned to the surveyor
+            queryset = list(set([r for r in rentals.objects.all() if r.property in
+                                 managed_properties.objects.filter(registered_by=self.request.user)]))
+        return queryset
+
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
     }
     ordering = ['id']
-    paginate_by = 5
+    paginate_by = 10
 
 
 @login_required()
@@ -713,12 +758,24 @@ class PaymentsListView(ListView):
     model = payments
     template_name = "core/dashboards/payments_list.html"
     context_object_name = "payments"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.user_type == 2:
+            # Get the tenancy terriers on the properties assigned to the surveyor
+            tenancy = set([r for r in rentals.objects.all() if r.property in
+                           managed_properties.objects.filter(registered_by=self.request.user)])
+
+            # Get the tenants of the properties assigned to the surveyor
+            queryset = list(set([p for p in payments.objects.all() if p.rental in tenancy]))
+        return queryset
+
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
     }
     ordering = ['-id']
-    paginate_by = 5
+    paginate_by = 10
 
 
 @login_required()

@@ -1,7 +1,5 @@
 {% extends 'layout/blank.html' %}
 
-{% load filter_tags %}
-
 {% block title %}Properties{% endblock title %}
 
 {% block sidebar %}
@@ -22,5 +20,5 @@
 {% endblock %}
 
 {% block content %}
-    {% get_properties request %}
+    {% include 'properties/includes/_properties_table.html' %}
 {% endblock %}

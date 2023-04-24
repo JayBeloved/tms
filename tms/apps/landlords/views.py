@@ -76,6 +76,14 @@ class LandlordsListView(ListView):
     model = landlord
     template_name = "landlords/dashboards/landlords_list.html"
     context_object_name = "landlords"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.user_type == 2:
+            # Get the landlords on the properties assigned to the surveyor
+            queryset = list(set([p.landlord for p in managed_properties.objects.filter(registered_by=self.request.user)]))
+        return queryset
+
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],

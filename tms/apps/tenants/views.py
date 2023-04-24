@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 
-from ..core.models import tenant
+from ..core.models import tenant, rentals, managed_properties
 from ..core.views import alert
 
 
@@ -84,6 +84,15 @@ class TenantsListView(ListView):
     model = tenant
     template_name = "tenants/dashboards/tenants_list.html"
     context_object_name = "tenants"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.user_type == 2:
+            # Get the tenants of the properties assigned to the surveyor
+            queryset = list(set([t for t in tenant.objects.all() if t.current_property in
+                                 managed_properties.objects.filter(registered_by=self.request.user)]))
+        return queryset
+
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],

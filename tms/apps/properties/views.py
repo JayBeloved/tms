@@ -82,6 +82,14 @@ class PropertiesListView(ListView):
     model = managed_properties
     template_name = "properties/dashboards/properties_list.html"
     context_object_name = "properties"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.user_type == 2:
+            # Get the properties assigned to the surveyor
+            queryset = managed_properties.objects.filter(registered_by=self.request.user)
+        return queryset
+
     extra_context = {
         'alertCount': alert()[1],
         'alerts': alert()[0],
