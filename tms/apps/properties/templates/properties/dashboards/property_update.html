@@ -105,7 +105,10 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Surveyor-in-Charge</label>
+                                    <label class="float-label text-primary">
+                                        Surveyor-in-Charge: {{ property.registered_by.last_name }} {{ property.registered_by.first_name }}
+                                        ({{ property.registered_by.username }})
+                                    </label>
                                     {{ form.registered_by }}
                                 </div>
                             </div>

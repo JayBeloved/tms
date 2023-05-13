@@ -39,14 +39,14 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Select Property</label>
+                                    <label class="float-label text-primary">Current Property: {{ rental.property.property_name }}</label>
                                     {{ form.property }}
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
-                                    <label class="float-label text-primary">Select Tenant</label>
+                                    <label class="float-label text-primary">Current Tenant: {{ rental.tenant.tenant_name }}</label>
                                     {{ form.tenant }}
                                 </div>
                             </div>
