@@ -253,10 +253,11 @@ class TenantUpdateForm(forms.ModelForm):
         ))
 
     def __init__(self, *args, **kwargs):
-        my_model_instance = kwargs.pop('sel_tenant', None)
-        super(TenantUpdateForm, self).__init__(*args, **kwargs)
-        if my_model_instance:
-            self.fields['current_property'].initial = my_model_instance
+        instance = kwargs.get('instance')
+        if instance:
+            initial = {'current_property': instance.pk}
+            kwargs.setdefault('initial', initial)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = tenant
