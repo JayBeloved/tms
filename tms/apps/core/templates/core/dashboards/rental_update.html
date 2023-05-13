@@ -36,38 +36,38 @@
                     <form action="{% url 'rentals:update' rental.id %}" class="user" method="POST">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Current Property: {{ rental.property.property_name }}</label>
                                     {{ form.property }}
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Current Tenant: {{ rental.tenant.tenant_name }}</label>
                                     {{ form.tenant }}
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                        </div>
+
+                        <div class="row">
+                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Rental Amount <strong>(N)</strong></label>
                                     {{ form.rental_amount }}
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Period Start</label>
                                     {{ form.date_started }}
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <span class="form-bar"></span>
                                     <label class="float-label text-primary">Period End</label>
