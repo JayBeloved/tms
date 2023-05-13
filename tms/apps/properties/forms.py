@@ -188,6 +188,12 @@ class PropertyUpdateForm(forms.ModelForm):
             }
         ))
 
+    def __init__(self, *args, **kwargs):
+        my_model_instance = kwargs.pop('sel_property', None)
+        super(PropertyUpdateForm, self).__init__(*args, **kwargs)
+        if my_model_instance:
+            self.fields['landlord'].initial = my_model_instance
+
     class Meta:
         model = managed_properties
         fields = ('property_name', 'address', 'city', 'state', 'country', 'description',

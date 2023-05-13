@@ -161,6 +161,12 @@ class RentalUpdateForm(forms.ModelForm):
             }
         ))
 
+    def __init__(self, *args, **kwargs):
+        my_model_instance = kwargs.pop('sel_rental', None)
+        super(RentalUpdateForm, self).__init__(*args, **kwargs)
+        if my_model_instance:
+            self.fields['property'].initial = my_model_instance
+
     class Meta:
         model = rentals
         fields = ('property', 'tenant', 'proposed_use', 'agreement_duration',
