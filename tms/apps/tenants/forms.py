@@ -228,6 +228,7 @@ class TenantUpdateForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 'class': 'form-control form-control-select',
+                'placeholder': ' Current Property',
                 'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
             }
         ))
@@ -251,13 +252,6 @@ class TenantUpdateForm(forms.ModelForm):
                 'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
             }
         ))
-
-    def __init__(self, *args, **kwargs):
-        instance = kwargs.get('instance')
-        if instance:
-            initial = {'current_property': instance.pk}
-            kwargs.setdefault('initial', initial)
-        super().__init__(*args, **kwargs)
 
     class Meta:
         model = tenant

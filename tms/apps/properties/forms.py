@@ -164,6 +164,7 @@ class PropertyUpdateForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 'class': 'form-control form-control-select',
+                'placeholder': ' Landlord Name',
                 'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
             }
         ))
@@ -184,16 +185,10 @@ class PropertyUpdateForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 'class': 'form-control form-control-select',
+                'placeholder': ' Surveyor Username',
                 'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
             }
         ))
-
-    def __init__(self, *args, **kwargs):
-        instance = kwargs.get('instance')
-        if instance:
-            initial = {'landlord': instance.pk}
-            kwargs.setdefault('initial', initial)
-        super().__init__(*args, **kwargs)
 
     class Meta:
         model = managed_properties
