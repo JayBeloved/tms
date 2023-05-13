@@ -26,8 +26,13 @@
             <div class="card-header py-3">
                 <div class="d-sm-flex align-items-center justify-content-between mb-0">
                     <h6 class="m-0 font-weight-bold text-primary">Tenancy Information</h6>
+                    <div>
+                    <a href="{% url 'payments:update' rental.id %}"
+                       class="shadow-sm mr-2 d-none d-sm-inline-block h6">
+                        Record Payment</a>
                     <a href="{% url 'rentals:update' rental.id %}" class="text-primary d-none d-sm-inline-block h6">
                         Edit Tenancy Terrier Details</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

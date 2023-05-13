@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 
 from .models import landlord, tenant, rentals, User, managed_properties, payments
-from .forms import RentalRegForm, PaymentForm, RentalUpdateForm
+from .forms import RentalRegForm, PaymentForm, RentalUpdateForm, PaymentUpdateForm
 
 
 # User Defined Functions
@@ -831,6 +831,87 @@ def update_rental(request, rental_id):
             u_form = RentalUpdateForm(instance=sel_rental)
     return render(request, 'core/dashboards/rental_update.html', {'form': u_form, 'rental': sel_rental,
                                                                   'alertCount': alert()[1], 'alerts': alert()[0]})
+
+
+@login_required()
+def update_payment(request, rental_id):
+    if rental_id is None:
+        messages.error(request, 'No Rental Selected')
+        return HttpResponseRedirect(reverse("rentals:all"))
+    else:
+        try:
+            sel_rental = rentals.objects.get(id=rental_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("rentals:all"))
+
+    form = PaymentUpdateForm(request.POST or None)
+
+    if request.method == 'POST':
+        # Check if the submitted form is valid
+        if form.is_valid():
+            rental = sel_rental
+            amount = form.cleaned_data.get("amount")
+            payment_quarter = form.cleaned_data.get("payment_quarter")
+
+            #############################
+            # Generate Unique Payment Code
+            # Randomly Choose Letters for adding to code
+            def gencode():
+                char1 = random.choice(string.ascii_uppercase)
+                char2 = random.choice(string.ascii_lowercase)
+                char3 = random.choice(string.ascii_letters)
+                char4 = random.choice('1234567890')
+                char5 = random.choice(string.ascii_uppercase)
+                char6 = random.choice(string.ascii_lowercase)
+                char7 = random.choice(string.ascii_letters)
+
+                return f"pmt/{char1}{char2}{char3}-{char4}{char5}/{char6}{char7}"
+
+            #############################
+            pmt = gencode()
+            payment_code = pmt
+            while payments.objects.filter(payment_code=pmt):
+                pmt = gencode()
+                if not payments.objects.filter(payment_code=gencode):
+                    payment_code = gencode
+
+            pt = payments.objects.create(rental=rental, amount=amount, payment_quarter=payment_quarter,
+                                         payment_code=payment_code)
+            pt.save()
+
+            # Reflect Change in the rentals table
+            sel_rental = rentals.objects.get(id=rental.id)
+            # Clean and convert currency to integers
+            current_balance = float(str(sel_rental.balance).replace(',', ''))
+            amount_paid = float(str(amount).replace(',', ''))
+
+            sel_rental.balance = current_balance - amount_paid
+            sel_rental.save()
+
+            new_balance = float(str(sel_rental.balance).replace(',', ''))
+            # Update Remarks
+            if new_balance > 0:
+                sel_rental.remarks = f"N {new_balance} rent is outstanding"
+                sel_rental.save()
+            elif new_balance == 0:
+                sel_rental.remarks = f"Tenancy is Running"
+                sel_rental.save()
+
+            messages.success(request, f'Payment Recorded Successfully')
+        else:
+            messages.error(request, 'Something Went Wrong, Check your entries and try again.')
+
+        return HttpResponseRedirect(reverse("rentals:view", rental_id))
+
+    context = {
+        'form': form,
+        'rental': sel_rental,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
+    }
+
+    return render(request, 'core/dashboards/update_payment.html', context)
 
 
 @login_required()

@@ -1,0 +1,21 @@
+{% extends 'layout/blank.html' %}
+
+{% block title %}New Rental Agreement{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">New Payment</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+{% include 'core/includes/_update_payment_form.html' %}
+{% endblock %}

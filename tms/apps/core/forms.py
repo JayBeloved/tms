@@ -202,3 +202,29 @@ class PaymentForm(forms.Form):
     class meta:
         model = payments
         fields = ('rental', 'amount', 'payment_quarter')
+
+
+class PaymentUpdateForm(forms.Form):
+    amount = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': 'Enter Amount Paid',
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    payment_quarter = forms.ChoiceField(
+        required=False,
+        choices=QUARTER_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control form-control-user',
+                'placeholder': " Payment Quarter",
+                'style': "border-radius: 10rem;padding: 0.5rem 0.5rem;",
+            }
+        ))
+
+    class meta:
+        model = payments
+        fields = ('amount', 'payment_quarter')

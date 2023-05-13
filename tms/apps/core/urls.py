@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('payments/', include(([
         path('new/', views.new_payment, name="new"),
+        path('update/<int:rental_id>', views.update_payment, name="update"),
         path('all/', views.PaymentsListView.as_view(), name="all")
     ], 'tms'), namespace='payments')),
-
 ]
