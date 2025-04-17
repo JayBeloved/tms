@@ -3,8 +3,10 @@ Django settings for tenantproject project.
 
 """
 
+
 from pathlib import Path
 
+import django_heroku
 import dj_database_url
 from decouple import Csv, config
 
@@ -137,10 +139,16 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR.parent.parent / "staticfiles"
+STATIC_ROOT = BASE_DIR.parent / "staticfiles"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
 
 # ==============================================================================
 # MEDIA FILES SETTINGS
@@ -148,7 +156,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR.parent.parent / "media"
+MEDIA_ROOT = BASE_DIR.parent / "media"
 
 
 # ==============================================================================

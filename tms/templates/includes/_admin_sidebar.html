@@ -1,11 +1,9 @@
+{% load static %}
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'my_admin:dashboard' %}">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-user-tie"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">TMS <sup>PRO</sup></div>
+        <img src="{% static 'accounts/main-logo.png' %}" alt="Logo" width="120">
     </a>
 
     <!-- Divider -->
@@ -27,18 +25,21 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
+    {% if request.user.user_type == 1 %}
     <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'agents:all' %}" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Agents</span>
+            <span>Surveyors</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{% url 'agents:all' %}">Manage Agents</a>
+                <a class="collapse-item" href="{% url 'agents:all' %}">Manage Surveyors</a>
+                <a class="collapse-item" href="{% url 'agents:registration' %}">Register New Surveyor</a>
             </div>
         </div>
     </li>
+    {% endif %}
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
@@ -51,6 +52,7 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{% url 'landlords:all' %}">Manage Landlords</a>
+                <a class="collapse-item" href="{% url 'landlords:registration' %}">Register New Landlord</a>
             </div>
         </div>
     </li>
@@ -65,6 +67,7 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{% url 'tenants:all' %}">Manage Tenants</a>
+                <a class="collapse-item" href="{% url 'tenants:registration' %}">Register New Tenant</a>
             </div>
         </div>
     </li>
@@ -74,7 +77,7 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Rentals
+        Tenancy
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -87,25 +90,34 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{% url 'properties:all' %}">Manage Properties</a>
+                <a class="collapse-item" href="{% url 'properties:registration' %}">Register New Property</a>
             </div>
         </div>
     </li>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="{% url 'rentals:all' %}">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Rental Agreements</span></a>
+            <span>Tenancy Terrier</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="{% url 'payments:all' %}">
             <i class="fas fa-fw fa-table"></i>
             <span>Payments</span></a>
     </li>
 
     <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'my_admin:mgt_index' %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Administrative Center</span></a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->

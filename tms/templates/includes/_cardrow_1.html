@@ -2,7 +2,8 @@
 <div class="col-xl-8 col-lg-7">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Rental Agreements</h6>
+            <h6 class="m-0 font-weight-bold text-primary">
+                <a href="{% url 'rentals:all' %}">Tenancy Terrier</a></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -12,23 +13,23 @@
                             <th>ID</th>
                             <th>Property</th>
                             <th>Tenant</th>
-                            <th>Agent</th>
+                            <th>Period</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% if rentals %}
                         {% for rental in rentals %}
                             <tr>
-                                <td>{{ rent.agreement_code }}</td>
-                                <td>{{ rent.property }}</td>
-                                <td>{{ rent.agent }}</td>
-                                <td>{{ rent.date_started }}</td>
-                                <td><a class="btn btn-success btn-sm">View</a></td>
+                                <td>{{ rental.id }}</td>
+                                <td>{{ rental.property }}</td>
+                                <td>{{ rental.tenant }}</td>
+                                <td>{{ rental.date_started }} - {{ rental.date_ending }}</td>
+                                <td><a class="btn btn-primary btn-sm">View</a></td>
                             </tr>
                         {% endfor %}
                     {% else %}
                     <h6 class="m-0 font-weight-bold text-primary text-center">
-                        No Agreements to Display</h6>
+                        No Tenancy to Display</h6>
                     {% endif %}
                     </tbody>
                 </table>
@@ -44,13 +45,15 @@
             <h6 class="m-0 font-weight-bold text-primary">Registrations</h6>
         </div>
         <div class="card-body">
+            {% if request.user.user_type == 1 %}
             <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'agents:registration' %}">
                 <span class="icon text-white-50">
                     <i class="fas fa-user-tie"></i>
                 </span>
-                <span class="text">Register New Agent</span>
+                <span class="text">Register New Surveyor</span>
             </a>
             <div class="my-2"></div>
+            {% endif %}
              <a class="btn btn-primary btn-block btn-icon-split" href="{% url 'landlords:registration' %}">
                 <span class="icon text-white-50">
                     <i class="fas fa-user"></i>

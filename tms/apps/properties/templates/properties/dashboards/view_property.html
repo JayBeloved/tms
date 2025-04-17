@@ -1,0 +1,154 @@
+{% extends 'layout/blank.html' %}
+{% load filter_tags %}
+
+{% block title %}Property Info{% endblock title %}
+
+{% block sidebar %}
+{% include 'includes/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block topbar %}
+{% include 'includes/_topbar.html' %}
+{% endblock %}
+
+{% block page_heading %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Property Code: {{ property.property_code }}</h1>
+    <a href="{% url 'properties:all' %}"> <h5 class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm">
+        All Properties
+    </h5></a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                 <div class="d-sm-flex align-items-center justify-content-between mb-0">
+                    <h6 class="m-0 font-weight-bold text-primary">Property Information</h6>
+                    <a href="{% url 'properties:update' property.id %}" class="text-primary d-none d-sm-inline-block h6">
+                        Edit Property Details</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="p-5">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Landlord: {{ property.landlord.landlord_name.upper }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Property Name: {{ property.property_name.upper }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Address: {{ property.address.title.upper }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Location: {{ property.city.upper }}, {{ property.state.upper }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                Description: {{ property.description.capitalize }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                {% if property.property_status == 0 %}
+                                Property Status: Vacant
+                                {% else %}
+                                Property Status: Occupied
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h3 class="h3 mb-0 text-gray-800">All Tenants</h3>
+</div>
+
+<!-- Create a card for each tenant of the property -->
+{% if count > 0 %}
+    {% for tenant in tenants %}
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{ tenant.tenant_name.upper }}</h6>
+            </div>
+            <div class="card-body">
+                <!-- Get the Tenancy Information of the Tenant -->
+                {% if tenancy_count > 0 %}
+                    {% for tenancy in tenancies %}
+                        {% if tenancy.tenant == tenant %}
+                            <div class="row">
+                                 <div class="col-sm-4">
+                                    <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                        Proposed Use: {{ tenancy.proposed_use }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                        Rent Amount: N {{ tenancy.rental_amount }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                        Outstanding Balance: N {{ tenancy.balance }}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                        Period: {{ tenancy.date_started }} - {{ tenancy.date_ending }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="h6 mb-0 font-weight-bold text-gray-600">
+                                        Remarks: {{ tenancy.remarks.capitalize }}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Get the Payments data of the tenant using templatetag -->
+                            {% get_payments tenancy %}
+
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+                <h5 class="m-0 font-weight-bold text-primary text-center">
+                            No Tenancy Terrier Record</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<h5 class="m-0 font-weight-bold text-primary text-center">No Tenant to Display</h5>
+{% endif %}
+
+
+
+{% endblock %}

@@ -36,12 +36,10 @@ STATES = (
     ("Oyo", 'Oyo'),
     ("Plateau", 'Plateau'),
     ("Sokoto", 'Sokoto'),
-    ("Sokoto", 'Sokoto'),
     ("Taraba", 'Taraba'),
     ("Yobe", 'Yobe'),
     ("Zamfara", 'Zamfara'),
     ("FCT", 'FCT'),
-
 )
 
 # Create Gender Choices
@@ -87,15 +85,21 @@ YR1 = 2
 MNT18 = 3
 YR2 = 4
 YR3 = 5
-YR5 = 6
+YR4 = 6
+YR5 = 7
 AGREEMENT_CHOICES = (
     (MNT6, "6 Months"),
     (YR1, "1 Year"),
     (MNT18, "18 Months"),
     (YR2, "2 Years"),
     (YR3, "3 Years"),
+    (YR4, "4 Years"),
     (YR5, "5 Years"),
 )
+
+# Tenancy Status Choices
+RUN = 1
+END = 0
 
 # Nationality Choices
 NGR = "Nigerian"
@@ -105,27 +109,40 @@ NATIONALITY_CHOICES = (
     (OTH, 'International'),
 )
 
+# Quarter Choices
+Q1 = "First Quarter"
+Q2 = "Second Quarter"
+Q3 = "Third Quarter"
+Q4 = "Fourth Quarter"
+
+QUARTER_CHOICES = (
+    (Q1, "First Quarter"),
+    (Q2, "Second Quarter"),
+    (Q3, "Third Quarter"),
+    (Q4, "Fourth Quarter"),
+)
+
 
 # Model for landlords
 class landlord(models.Model):
     landlord_name = models.CharField(max_length=100, null=True)
-    landlord_email = models.EmailField(null=True)
+    landlord_email = models.EmailField(null=True, blank=True)
     mobile_number = models.CharField(max_length=15, null=True, blank=True)
     state_of_origin = models.CharField(max_length=15, choices=STATES, default="FCT")
     date_registered = models.DateField('reg_date', default=timezone.now, null=True)
     landlord_code = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f"Landlord {self.landlord_code} - {self.landlord_name}"
+        return self.landlord_name
 
 
 class managed_properties(models.Model):
     property_name = models.CharField(max_length=60)
-    address = models.CharField(max_length=225)
-    city = models.CharField(max_length=100)
+    address = models.CharField(max_length=225, null=True)
+    city = models.CharField(max_length=100, null=True)
     state = models.CharField(max_length=15, choices=STATES, default="FCT")
     country = models.CharField(max_length=50)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     landlord = models.ForeignKey(landlord, on_delete=models.CASCADE)
     registered_by = models.ForeignKey(User, on_delete=models.CASCADE)
     date_registered = models.DateField('reg_date', default=timezone.now, null=True)
@@ -133,28 +150,29 @@ class managed_properties(models.Model):
     property_code = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f'{self.property_code} - {self.property_name}'
+        return self.property_name
 
 
 class tenant(models.Model):
     # Primary Details
     tenant_name = models.CharField(max_length=60, null=True)
-    tenant_email = models.EmailField(null=True)
+    tenant_email = models.EmailField(null=True, blank=True)
     mobile_number = models.CharField(max_length=15, null=True, blank=True)
-    current_property = models.ForeignKey(managed_properties, on_delete=models.CASCADE, to_field='property_code')
+    current_property = models.ForeignKey(managed_properties,
+                                         on_delete=models.CASCADE, to_field='property_code', null=True)
     marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS, default=NLL)
     nationality = models.CharField(max_length=50, choices=NATIONALITY_CHOICES, default=NGR)
     tenant_code = models.CharField(max_length=30, unique=True, null=True)
     # Family Details
-    next_of_kin = models.CharField(max_length=70, null=True)
+    next_of_kin = models.CharField(max_length=70, null=True, blank=True)
     nok_contact = models.CharField(max_length=15, null=True, blank=True)
     # Business and other details
-    occupation = models.CharField(max_length=50, null=True)
-    industry = models.CharField(max_length=50, null=True)
-    office_address = models.TextField(null=True)
+    occupation = models.CharField(max_length=50, null=True, blank=True)
+    industry = models.CharField(max_length=50, null=True, blank=True)
+    office_address = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"Tenant - {self.tenant_name}"
+        return self.tenant_name
 
 
 class rentals(models.Model):
@@ -164,11 +182,22 @@ class rentals(models.Model):
     proposed_use = models.CharField(max_length=20, choices=PROPERTY_USE, default=RSD)
     date_started = models.DateField('Beginning of Rent', default=timezone.now, null=True)
     agreement_duration = models.PositiveSmallIntegerField('agreement duration', choices=AGREEMENT_CHOICES, default=YR1)
-    rental_amount = models.CharField(max_length=30)
+    rental_amount = models.FloatField('Rental Amount', max_length=40)
     date_ending = models.DateField('End of Rent', null=True)
     agreement_code = models.CharField(max_length=30, unique=True)
+    remarks = models.CharField(max_length=70, null=True, blank=True)
+    balance = models.FloatField('Balance Outstanding', max_length=40, null=True)
 
     def __str__(self):
-        return f"Agreement {self.agreement_code} with {self.tenant}"
+        return f"{self.tenant} - {self.property}"
 
-    
+
+class payments(models.Model):
+    rental = models.ForeignKey(rentals, on_delete=models.CASCADE, to_field='agreement_code')
+    payment_quarter = models.CharField(max_length=30, choices=QUARTER_CHOICES,
+                                       default=Q1, null=True)
+    amount = models.FloatField('Amount Paid', max_length=40)
+    payment_code = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return f"{self.rental} | N {self.amount}"
