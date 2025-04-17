@@ -6,6 +6,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 import tms
 from .base import *
 
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
 # ==============================================================================
 # SECURITY SETTINGS
 # ==============================================================================
