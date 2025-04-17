@@ -5,13 +5,15 @@ from django.views.generic import ListView
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 
+from django.core.exceptions import ObjectDoesNotExist
+
 ########################
 
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
-
+from ..core.views import alert
 from .models import User, USERTYPE_CHOICES
 
 
@@ -36,7 +38,7 @@ def login_view(request):
                 elif user.user_type == 2:
                     messages.success(request, 'Agent SUCCESSFUL LOGIN')
                     # return redirect("agents:dashboard")
-                    return HttpResponse("AGENT DASHBOARD")
+                    return redirect("my_admin:dashboard")
                 else:
                     msg = 'Something Went Wrong'
                     HttpResponseRedirect('landing')
@@ -54,7 +56,6 @@ def login_redirect(request):
 
 @login_required()
 def register_agent(request):
-
     form = AgentRegisterForm(request.POST or None)
     if request.method == 'POST':
         # Check if the submitted form is valid
@@ -80,6 +81,7 @@ def register_agent(request):
                         user_name = user_name
 
                 return user_name
+
             #########################
 
             #  Check Username or Generate
@@ -111,12 +113,14 @@ def register_agent(request):
                                 user_name = user_name
 
                         return user_name
+
                     #####################
 
                     ver_username = check_username(username)
 
-                    usr = User.objects.create(user_type=user_type, first_name=first_name,
-                                              last_name=last_name, email=email, password=password,
+                    usr = User.objects.create(user_type=user_type, first_name=first_name.capitalize(),
+                                              last_name=last_name.capitalize(), email=email.casefold(),
+                                              password=password,
                                               username=ver_username, is_staff=is_staff, date_joined=reg_date)
                     usr.save()
 
@@ -132,6 +136,8 @@ def register_agent(request):
 
     context = {
         'form': form,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
     }
 
     return render(request, 'accounts/dashboards/agent_register.html', context)
@@ -142,6 +148,10 @@ class AgentsListView(ListView):
     queryset = User.objects.filter(user_type=2)
     template_name = "accounts/dashboards/agents_list.html"
     context_object_name = "agents"
+    extra_context = {
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
+    }
     ordering = ['id']
     paginate_by = 5
 
@@ -155,33 +165,55 @@ def my_profile(request):
             usertype = t[1]
 
     info_form = ProfileInfoForm(instance=request.user)
-    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype})
+    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype,
+                                                                'alertCount': alert()[1], 'alerts': alert()[0]})
 
 
 @login_required()
-def agent_profile(request):
-    get_usertype = request.user.user_type
-    usertype = 'Error'
-    for t in USERTYPE_CHOICES:
-        if t[0] == get_usertype:
-            usertype = t[1]
-
-    info_form = ProfileInfoForm(instance=request.user)
-    return render(request, 'accounts/dashboards/profile.html', {'form': info_form, 'usertype': usertype})
-
-
-
-@login_required()
-def profile_info(request):
-    if request.method == 'POST':
+def profile_update(request):
+    if request.POST.get('formId') == '1':
         u_form = ProfileInfoUpdateForm(request.POST, instance=request.user)
+
         if u_form.is_valid():
             u_form.save()
-            messages.success(request, 'Profile Updated Successfully')
-            return redirect('profile:profile_info')
+            messages.success(request, 'Profile Details Updated Successfully')
+            return redirect('accounts:profile')
         else:
             messages.error(request, 'Something Went Wrong, Unable to update profile')
+    elif request.POST.get('formId') == '2':
+        p_form = ProfilePicsUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if p_form.is_valid():
+            p_form.save()
+            messages.success(request, 'Profile Picture Updated Successfully')
+            return redirect('accounts:profile')
     else:
         u_form = ProfileInfoUpdateForm(instance=request.user)
+        p_form = ProfilePicsUpdateForm(instance=request.user.profile)
 
-    return render(request, 'accounts/profile_details.html', {'form': u_form})
+    return render(request, 'accounts/dashboards/profile_update.html',
+                  {'u_form': u_form, 'p_form': p_form, 'alertCount': alert()[1],
+                   'alerts': alert()[0]})
+
+
+@login_required()
+def agent_info(request, agent_id):
+    if agent_id is None:
+        messages.error(request, 'No Agent Selected')
+        return HttpResponseRedirect(reverse("agents:all"))
+    else:
+        try:
+            sel_agent = User.objects.get(id=agent_id)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Something Went Wrong')
+            return HttpResponseRedirect(reverse("agents:all"))
+
+    info_form = ProfileInfoForm(instance=sel_agent)
+
+    context = {
+        'form': info_form,
+        'agent': sel_agent,
+        'alertCount': alert()[1],
+        'alerts': alert()[0],
+    }
+    return render(request, 'accounts/dashboards/agent_info.html', context)
